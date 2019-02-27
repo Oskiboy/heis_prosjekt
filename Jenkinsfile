@@ -9,8 +9,6 @@ pipeline {
                 apt-get -y install ranger
                 gcc --version
                 '''
-            }
-            steps {
                 sh 'echo "I am done building stuff"'
             }
         }
