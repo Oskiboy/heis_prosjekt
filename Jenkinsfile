@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker { image 'ubuntu:16.04' } }
+    agent { dockerfile true }
     
     stages {
         stage('Build') {
