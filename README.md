@@ -1,2 +1,2 @@
-# heis_prosjekt
+# Heisprosjekt
 Repo for heisprosjekt
