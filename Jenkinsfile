@@ -6,8 +6,7 @@ pipeline {
             steps {
                 sh '''
                 touch this_should_be_in_a_container.txt
-                apt-get update
-                apt-get -y install ranger
+                npm --version
                 gcc --version
                 '''
                 sh 'echo "I am done building stuff"'
