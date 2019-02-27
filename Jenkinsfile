@@ -4,23 +4,19 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                step {
-                    sh '''
-                    apt-get update
-                    apt-get -y install ranger
-                    gcc --version
-                    '''
-                }
-                step {
-                    sh 'echo "I am done building stuff"'
-                }
+                sh '''
+                apt-get update
+                apt-get -y install ranger
+                gcc --version
+                '''
+            }
+            steps {
+                sh 'echo "I am done building stuff"'
             }
         }
         stage('UnitTests') {
             steps {
-                step {
-                    sh 'echo "I am now testing stuff"'
-                }
+                sh 'echo "I am now testing stuff"'
             }
         }
     }
