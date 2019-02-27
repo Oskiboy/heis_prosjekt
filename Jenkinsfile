@@ -5,6 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+                touch this_should_be_in_a_container.txt
                 apt-get update
                 apt-get -y install ranger
                 gcc --version
