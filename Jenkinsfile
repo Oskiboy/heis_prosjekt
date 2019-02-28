@@ -1,26 +1,31 @@
 pipeline {
     agent { dockerfile true }
-    
+
     stages {
         stage('Build') {
             steps {
                 sh '''
-                touch this_should_be_in_a_container.txt
-                npm --version
+                echo "Starting build..."
                 gcc --version
+                
+                sh build.sh
                 '''
-                sh 'echo "I am done building stuff"'
+                sh 'echo "Build complete..."'
             }
         }
         stage('UnitTests') {
             steps {
                 sh 'echo "I am now testing stuff"'
+                sh './build/HeisLab.bin'
             }
         }
     }
     post {
         always {
-            sh 'echo "do cleanup"'
+            sh '''
+            echo "Starting clean"
+            rm -f build/
+            '''
         }
     }
 }

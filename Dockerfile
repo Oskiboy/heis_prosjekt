@@ -1,10 +1,13 @@
 FROM ubuntu:16.04
 LABEL Author oskar.oestby@gmail.com
 
-RUN apt-get update -qq && apt-get upgrade -qy
+RUN apt-get update -qq && apt-get upgrade -qqy
 
-RUN apt-get install -y build-essential \
+RUN apt-get install -qy build-essential \
     gcc \
     git \
     cmake \
-    make 
+    make
+
+WORKDIR /heis_lab
+RUN cwd || ls -alt
