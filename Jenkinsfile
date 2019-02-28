@@ -18,7 +18,7 @@ pipeline {
         }
         stage('UnitTests') {
             steps {
-                sh 'echo "Running Unit Tests:"'
+                sh 'echo "Running Unit Tests..."'
                 sh './build/${TEST_OUTPUT}'
             }
         }
