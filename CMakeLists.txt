@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(HeisLab)
 
+execute_process(COMMAND git submodule update --init)
 #file(GLOB heislib_SRC "src/*.c")
 #list(REMOVE_ITEM heislib_SRC "src/main.c")
 
