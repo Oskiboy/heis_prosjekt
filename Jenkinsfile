@@ -1,6 +1,6 @@
 pipeline {
     agent { dockerfile true }
-    enviroment {
+    environment {
         BUILD_OUTPUT = "project_build_binary.bin"
         TEST_OUTPUT = "test_binary.bin"
     }
