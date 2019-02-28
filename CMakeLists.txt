@@ -54,4 +54,4 @@ target_link_libraries(${test_output} dummy_lib unity_lib)
 
 
 add_executable(${build_output} src/main.c)
-#target_link_libraries(${PROJECT_NAME}.bin heis_lib)
+#target_link_libraries(${build_output} heis_lib)
