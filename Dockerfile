@@ -10,4 +10,3 @@ RUN apt-get install -qy build-essential \
     make
 
 WORKDIR /heis_lab
-RUN cwd || ls -alt
