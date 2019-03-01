@@ -19,7 +19,11 @@ pipeline {
         stage('UnitTests') {
             steps {
                 sh 'echo "Running Unit Tests..."'
-                sh './build/${TEST_OUTPUT}'
+                sh '''
+                if [ -f build/${TEST_OUTPUT} ]; then
+                    ./build/${TEST_OUTPUT}
+                fi
+                '''
             }
         }
     }
