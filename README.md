@@ -17,6 +17,6 @@ To build the project run the build script
 ## Unit tests
 For unit tests we use the Unity test project. Tests are built with the project and should be in the build folder.
 
-## CI
+## CIasd
 This project is set up to be built on a Jenkins build server. There the Docker image will be used to build the code in a sterile environment. 
 After successful builds the server will run all unit tests and report back to the repository with the build status.
