@@ -9,6 +9,7 @@ pipeline {
             steps {
                 sh '''
                 echo "Starting build..."
+                pwd
                 gcc --version
                 
                 sh build.sh
@@ -20,6 +21,7 @@ pipeline {
             steps {
                 sh 'echo "Running Unit Tests..."'
                 sh '''
+                pwd
                 if [ -f build/${TEST_OUTPUT} ]; then
                     ./build/${TEST_OUTPUT} > build/unit_tests.log
                 else
