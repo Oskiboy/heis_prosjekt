@@ -21,7 +21,7 @@ pipeline {
                 sh 'echo "Running Unit Tests..."'
                 sh '''
                 if [ -f build/${TEST_OUTPUT} ]; then
-                    ./build/${TEST_OUTPUT}
+                    ./build/${TEST_OUTPUT} > build/unit_tests.log
                 fi
                 '''
             }
@@ -29,6 +29,7 @@ pipeline {
     }
     post {
         always {
+            archiveArtifacts artifacts: "build/unit_tests.log"
             sh '''
             echo "Starting clean"
             rm -rf build/
