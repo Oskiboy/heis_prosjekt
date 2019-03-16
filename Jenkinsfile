@@ -5,11 +5,17 @@ pipeline {
         TEST_OUTPUT = "test_binary.bin"
     }
     stages {
+        stage('Initialization') {
+            steps {
+                sh """
+                mkdir logs
+                """
+            }
+        }
         stage('Build') {
             steps {
                 sh '''
                 echo "Starting build..."
-                pwd
                 gcc --version
                 
                 sh build.sh
@@ -21,11 +27,10 @@ pipeline {
             steps {
                 sh 'echo "Running Unit Tests..."'
                 sh '''
-                pwd
                 if [ -f build/${TEST_OUTPUT} ]; then
-                    ./build/${TEST_OUTPUT} > build/unit_tests.log
+                    ./build/${TEST_OUTPUT} > logs/unit_tests.log
                 else
-                    echo "NO UNIT TESTS RUN." > build/unit_tests.log
+                    echo "NO UNIT TESTS RUN." > logs/unit_tests.log
                 fi
                 '''
             }
@@ -33,10 +38,11 @@ pipeline {
     }
     post {
         always {
-            archiveArtifacts artifacts: "build/unit_tests.log"
+            archiveArtifacts artifacts: "logs/*.log"
             sh '''
+            ls
             echo "Starting clean"
-            rm -rf build/
+            rm -rf build/ logs/
             '''
         }
         success {
