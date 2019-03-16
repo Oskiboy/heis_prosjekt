@@ -23,9 +23,9 @@ pipeline {
                 sh '''
                 pwd
                 if [ -f build/${TEST_OUTPUT} ]; then
-                    ./build/${TEST_OUTPUT} | tee build/unit_tests.log
+                    ./build/${TEST_OUTPUT} > build/unit_tests.log
                 else
-                    echo "NO UNIT TESTS RUN." | tee build/uinit_tests.log
+                    echo "NO UNIT TESTS RUN." > build/unit_tests.log
                 fi
                 '''
             }
