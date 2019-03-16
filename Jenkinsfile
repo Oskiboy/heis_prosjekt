@@ -22,6 +22,8 @@ pipeline {
                 sh '''
                 if [ -f build/${TEST_OUTPUT} ]; then
                     ./build/${TEST_OUTPUT} > build/unit_tests.log
+                else
+                    echo "NO UNIT TESTS RUN." > build/uinit_tests.log
                 fi
                 '''
             }
