@@ -10,14 +10,15 @@ SRC_DIR 		:= src
 ##################
 # Import all source files.
 ##################
-OBJ := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
-SRC := $(SOURCES:%.c=$(SRC_DIR)/%.c)
+OBJ 		:= $(SOURCES:%.c=$(BUILD_DIR)/%.o)
+SRC 		:= $(SOURCES:%.c=$(SRC_DIR)/%.c)
+ELEV_DRIVER_OBJ := $(ELEV_DRIVER_SRC:%.c=$(BUILD_DIR)/%.o)
 
 
 ##################
 # Set up toolchain
 ##################
-CC 		:= clang
+CC 	:= clang
 CFLAGS 	:= -O0 -g3 -Wall -Werror -std=gnu99
 LDFLAGS := -lcomedi -lm
 
@@ -32,14 +33,8 @@ vpath %.c $(SRC_DIR)
 # Defines rules.
 #################
 .PHONY: heis
-heis: $(OBJ) 
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ) -o $@
-
-.PHONY: elev_drv
-elev_drv: $(BUILD_DIR)/elev_driver.o
-
-$(BUILD_DIR)/elev_driver.o: $(ELEV_DRIVER_SRC)
-	$(CC) $(CFLAGS) $(LDFLAGS) $^
+heis: $(OBJ) $(ELEV_DRIVER_OBJ)
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $(BUILD_DIR)/$@
 
 $(BUILD_DIR):
 	mkdir $(BUILD_DIR)
