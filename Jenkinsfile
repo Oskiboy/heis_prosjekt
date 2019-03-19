@@ -35,7 +35,7 @@ pipeline {
     post {
         success {
             sh '''
-            echo "All tests passed!"
+            echo "Build passed!"
             '''
         }
         failure {
