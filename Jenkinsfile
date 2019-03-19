@@ -1,5 +1,5 @@
 pipeline {
-    agent { dockerfile {additionalBuildArgs '--no-cache'} true }
+    agent { dockerfile true }
     environment {
         BUILD_OUTPUT = "project_build_binary.bin"
         TEST_OUTPUT = "test_binary.bin"
