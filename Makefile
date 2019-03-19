@@ -1,34 +1,52 @@
-SOURCES := main.c
-ELEV_DRIVER_SRC := elev.c io.c
-BUILD_DIR := build
-OBJ := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
+###################
+# Set up variables
+###################
 
-SRC_DIR := src
+SOURCES 		:= main.c
+ELEV_DRIVER_SRC := elev.c io.c
+BUILD_DIR 		:= build
+SRC_DIR 		:= src
+
+##################
+# Import all source files.
+##################
+OBJ := $(SOURCES:%.c=$(BUILD_DIR)/%.o)
 SRC := $(SOURCES:%.c=$(SRC_DIR)/%.c)
 
-CC := gcc
-CFLAGS := -O0 -g3 -Wall -Werror -std=gnu99
 
+##################
+# Set up toolchain
+##################
+CC 		:= gcc
+CFLAGS 	:= -O0 -g3 -Wall -Werror -std=gnu99
 LDFLAGS := -lcomedi -lm
+
+
+
+# This gives make a search pattern for all %.c targets.
+vpath %.c $(SRC_DIR)
 
 .DEFAULT_GOAL := heis
 
-vpath %.c $(SRC_DIR)
-
-heis : $(OBJ) 
+#################
+# Defines rules.
+#################
+.PHONY: heis
+heis: $(OBJ) 
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ) -o $@
 
+.PHONY: elev_drv
 elev_drv: $(BUILD_DIR)/elev_driver.o
 
-$(BUILD_DIR)/elev_driver: $(ELEV_DRIVER_SRC)
+$(BUILD_DIR)/elev_driver.o: $(ELEV_DRIVER_SRC)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^
 
-$(BUILD_DIR) :
+$(BUILD_DIR):
 	mkdir $(BUILD_DIR)
 
-$(BUILD_DIR)/%.o : %.c | $(BUILD_DIR)
+$(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY : clean
+.PHONY: clean
 clean:
 	rm -rf $(.DEFAULT_GOAL) $(BUILD_DIR)
