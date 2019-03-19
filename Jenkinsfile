@@ -1,9 +1,5 @@
 pipeline {
     agent { dockerfile true }
-    environment {
-        BUILD_OUTPUT = "project_build_binary.bin"
-        TEST_OUTPUT = "test_binary.bin"
-    }
     stages {
         stage('Initialization') {
             steps {
@@ -44,7 +40,7 @@ pipeline {
             '''
         }
         always {
-            archiveArtifacts artifacts: "logs/*.log"
+            archiveArtifacts artifacts: "logs/*.log, build/heis"
             sh '''
             ls
             echo "Starting clean"
