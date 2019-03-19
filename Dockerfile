@@ -7,6 +7,20 @@ RUN apt-get install -qy build-essential \
     gcc \
     git \
     cmake \
-    make
+    make \
+    autoconf \
+    swig \
+    python \
+    flex \
+    byacc \
+    bison \
+    libtool
 
+RUN git clone https://github.com/Linux-Comedi/comedilib.git
+WORKDIR /comedilib
+RUN ./autogen.sh
+RUN ./configure --with-udev-hotplug=/lib --sysconfdir=/etc
+RUN make && make install
+WORKDIR /
+RUN rm -rf comedilib
 WORKDIR /heis_lab
