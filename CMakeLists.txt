@@ -29,8 +29,9 @@ endif()
 #   Setting up sources and includes
 #---------------------
 
-#file(GLOB heislib_SRC "src/*.c")
-#list(REMOVE_ITEM heislib_SRC "src/main.c")
+# Create a glob with all our source files and remove main
+file(GLOB heislib_SRC "src/*.c")
+list(REMOVE_ITEM heislib_SRC "src/main.c")
 
 include_directories(inc Unity/src)
 
@@ -42,16 +43,20 @@ add_library(unity_lib Unity/src/unity.c)
 
 
 #----------------------
-#   Dummy executable
+#   Tests
 #----------------------
-add_library(dummy_lib "src/test_lib.c")
+# This is how you create the test executable
+#add_library(this_the_library_to_test "src/test_lib.c")
+#add_executable(${test_output} "tests/dummy.c")
+#target_link_libraries(${test_output} this_the_library_to_test unity_lib)
 
-add_executable(${test_output} "tests/dummy.c")
+#---------------------
+#   Heis bibliotek
+#---------------------
+add_library(heis_lib ${heislib_SRC})
 
-
-target_link_libraries(${test_output} dummy_lib unity_lib)
-#add_library(heis_lib ${heislib_SRC})
-
-
+#---------------------
+#   Add main executable
+#---------------------
 add_executable(${build_output} src/main.c)
-#target_link_libraries(${PROJECT_NAME}.bin heis_lib)
+target_link_libraries(${build_output} heis_lib)
