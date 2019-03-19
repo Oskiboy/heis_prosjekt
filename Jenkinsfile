@@ -5,6 +5,13 @@ pipeline {
         TEST_OUTPUT = "test_binary.bin"
     }
     stages {
+        stage('Initialization') {
+            steps {
+                sh """
+                mkdir logs
+                """
+            }
+        }
         stage('Build') {
             steps {
                 sh '''
@@ -26,9 +33,11 @@ pipeline {
     }
     post {
         always {
+            archiveArtifacts artifacts: "logs/*.log"
             sh '''
+            ls
             echo "Starting clean"
-            rm -rf build/
+            rm -rf build/ logs/
             '''
         }
         success {
