@@ -16,23 +16,18 @@ pipeline {
             steps {
                 sh '''
                 echo "Starting build..."
-                gcc --version
-                
-                sh build.sh
+                make
+
                 '''
                 sh 'echo "Build complete..."'
             }
         }
         stage('UnitTests') {
             steps {
-                sh 'echo "Running Unit Tests..."'
-                sh '''
-                if [ -f build/${TEST_OUTPUT} ]; then
-                    ./build/${TEST_OUTPUT} > logs/unit_tests.log
-                else
-                    echo "NO UNIT TESTS RUN." > logs/unit_tests.log
-                fi
-                '''
+                sh 'echo "Running Unit Tests:"'
+                sh 'make tests'
+                sh 'echo "Tests built successfully"'
+                sh 'mkdir -p logs && make run_tests > logs/test.log' 
             }
         }
     }
