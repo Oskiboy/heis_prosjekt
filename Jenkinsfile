@@ -9,6 +9,7 @@ pipeline {
             steps {
                 sh """
                 mkdir logs
+                echo "Logs Initialized" >> logs/test.log
                 """
             }
         }
@@ -27,19 +28,11 @@ pipeline {
                 sh 'echo "Running Unit Tests:"'
                 sh 'make tests'
                 sh 'echo "Tests built successfully"'
-                sh 'mkdir -p logs && make run_tests > logs/test.log' 
+                sh 'make run_tests >> logs/test.log' 
             }
         }
     }
     post {
-        always {
-            archiveArtifacts artifacts: "logs/*.log"
-            sh '''
-            ls
-            echo "Starting clean"
-            rm -rf build/ logs/
-            '''
-        }
         success {
             sh '''
             echo "All tests passed!"
@@ -48,6 +41,15 @@ pipeline {
         failure {
             sh '''
             echo "Build failed!"
+            '''
+        }
+        always {
+            archiveArtifacts artifacts: "logs/*.log"
+            sh '''
+            ls
+            echo "Starting clean"
+            make clean
+            rm -rf build/ logs/
             '''
         }
     }
