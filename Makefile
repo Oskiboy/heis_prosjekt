@@ -50,3 +50,22 @@ $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 .PHONY: clean
 clean:
 	rm -rf $(.DEFAULT_GOAL) $(BUILD_DIR)
+
+
+#############################
+# Unit tests.
+#############################
+UNITY_DIR 	:= Unity
+TEST_DIR 	:= tests
+TEST_SOURCES:= 
+TEST_SRC	:= $(TEST_SRC:%.c=$(TEST_DIR)/%.c)
+TESTS		:=
+.PHONY: tests
+tests: unity
+run_tests: tests
+
+.PHONY: unity
+unity: $(UNITY_DIR)/unity.c
+	$(CC) -o $@ $< -I$(UNITY_DIR)
+
+

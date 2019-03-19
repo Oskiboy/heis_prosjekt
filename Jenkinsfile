@@ -9,9 +9,8 @@ pipeline {
             steps {
                 sh '''
                 echo "Starting build..."
-                gcc --version
-                
-                sh build.sh
+                make
+
                 '''
                 sh 'echo "Build complete..."'
             }
@@ -19,7 +18,9 @@ pipeline {
         stage('UnitTests') {
             steps {
                 sh 'echo "Running Unit Tests:"'
-                sh './build/${TEST_OUTPUT}'
+                sh 'make tests'
+                sh 'echo "Tests built successfully"'
+                sh 'mkdir -p logs && make run_tests > logs/test.log' 
             }
         }
     }
