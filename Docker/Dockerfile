@@ -4,6 +4,7 @@ LABEL Author oskar.oestby@gmail.com
 RUN apt-get update -qq && apt-get upgrade -qqy \
 && apt-get install -qy \
 gcc \
+git \
 clang \
 curl \
 zip \
