@@ -24,16 +24,26 @@
                                                   }};
 
 enum state_enumeration;
-typedef enum state_enumeration state_t;
 struct fsm_module_struct;
-typedef struct fsm_module_struct fsm_t;
-
-typedef state_t (*state_function_t)(fsm_t* fsm_p);
 
 /**
- * @brief The enumeration of the FSMs states.
+ * @brief The state_t connects states to their indexes in the state array.
  * 
  */
+typedef enum state_enumeration state_t;
+/**
+ * @brief The fsm_t holds an instance of the state machine module.
+ * 
+ */
+typedef struct fsm_module_struct fsm_t;
+
+/**
+ * @brief Defines the prototype of all state functions
+ * To have an easy expandable interface, all state functions follow this 
+ * prototype, so that they can be fitted into the state function array.
+ */
+typedef state_t (*state_function_t)(fsm_t* fsm_p);
+
 enum state_enumeration {
     UP_STATE,
     DOWN_STATE,
@@ -50,7 +60,6 @@ struct fsm_module_struct{
     state_function_t current_state_function;
     const state_function_t state_function_array[STATES_N];
 };
-
 
 /**
  * @brief Run the state machine.
