@@ -53,3 +53,6 @@ clean:
 .PHONY: tests
 tests:
 	make -C tests
+
+run_tests:
+	@echo "Not yet configured..."
