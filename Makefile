@@ -46,10 +46,12 @@ $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 clean:
 	rm -rf $(BUILD_DIR)/*
 
-
 #############################
 # Unit tests.
 #############################
 .PHONY: tests
-tests:
+export BUILD_DIR
+export CFLAGS
+export CC
+tests: heis
 	make -C tests
