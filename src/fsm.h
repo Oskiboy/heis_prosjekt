@@ -1,5 +1,7 @@
 #ifndef FSM_H
 #define FSM_H
+
+#include "elev.h"
 /**
  * @file 
  * @brief The FSM interface.
@@ -21,28 +23,34 @@
                                                   init_state_function,      \
                                                   }};
 
+enum state_enumeration;
+typedef enum state_enumeration state_t;
+struct fsm_module_struct;
+typedef struct fsm_module_struct fsm_t;
+
 typedef state_t (*state_function_t)(fsm_t* fsm_p);
 
 /**
  * @brief The enumeration of the FSMs states.
  * 
  */
-typedef enum {
+enum state_enumeration {
     UP_STATE,
     DOWN_STATE,
     STANDBY_STATE,
     STOP_STATE,
     INIT_STATE,
     STATES_N
-} state_t;
+};
 
-typedef struct {
+struct fsm_module_struct{
     state_t state;
     int init;
     elev_motor_direction_t  dir;
     state_function_t current_state_function;
     const state_function_t state_function_array[STATES_N];
-} fsm_t;
+};
+
 
 /**
  * @brief Run the state machine.
