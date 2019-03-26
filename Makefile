@@ -3,22 +3,22 @@
 ###################
 
 SOURCES 		:= main.c
-ELEV_DRIVER_SRC 	:= elev.c io.c
+ELEV_DRIVER_SRC := elev.c io.c
 BUILD_DIR 		:= build
 SRC_DIR 		:= src
 
 ##################
 # Import all source files.
 ##################
-OBJ 		:= $(SOURCES:%.c=$(BUILD_DIR)/%.o)
-SRC 		:= $(SOURCES:%.c=$(SRC_DIR)/%.c)
+OBJ 			:= $(SOURCES:%.c=$(BUILD_DIR)/%.o)
+SRC 			:= $(SOURCES:%.c=$(SRC_DIR)/%.c)
 ELEV_DRIVER_OBJ := $(ELEV_DRIVER_SRC:%.c=$(BUILD_DIR)/%.o)
 
 
 ##################
 # Set up toolchain
 ##################
-CC 	:= clang
+CC 		:= clang
 CFLAGS 	:= -O0 -g3 -Wall -Werror -std=gnu99
 LDFLAGS := -lcomedi -lm
 
