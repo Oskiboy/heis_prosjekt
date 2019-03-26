@@ -1,7 +1,8 @@
 pipeline {
     agent { 
-        docker {
-            image 'oskiboy/heis_lab:latest'
+        dockerfile {
+            filename 'Dockerfile'
+            dir 'build'
         }
     }
     stages {
