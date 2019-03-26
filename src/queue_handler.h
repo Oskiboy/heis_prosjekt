@@ -2,23 +2,22 @@
 #define QUEUE_HANDLER_H
 
 #include <stdbool.h>
+#include "elev.h"
 
-typedef enum {
-    INT_1,
-    INT_2,
-    INT_3,
-    EXT_1_U,
-    EXT_2_U,
-    EXT_3_U,
-    EXT_4_D,
-    EXT_3_D,
-    EXT_2_D,
-    ORDER_N
-}order_type_t;
+typedef struct request_struct request_t;
+typedef struct order_queue_module_struct order_queue_t;
 
-typedef struct {
-    bool active;
-} order_t;
+struct order_queue_module_struct {
+    int (*check_for_order)(order_queue_t* self, elev_motor_direction_t direction);
+    int (*update)(order_queue_t* self);
+    void (*clear_queue)(order_queue_t* self);
+    void (*complete_order)();
+    elev_motor_direction_t (*next_order)(order_queue_t* self);
+};
 
+struct request_struct {
+    int floor;
+    elev_motor_direction_t direction;
+};
 
 #endif //QUEUE_HANDLER_H
