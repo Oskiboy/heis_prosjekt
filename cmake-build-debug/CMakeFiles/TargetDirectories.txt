@@ -1,0 +1,3 @@
+/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles/heis_prosjekt.dir

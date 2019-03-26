@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/channels.h
+
+/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/io.c
+io.h
+/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/io.h
+channels.h
+/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/channels.h
+
+/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/io.h
+

@@ -25,3 +25,5 @@ RUN make && make install
 WORKDIR /
 RUN rm -rf comedilib
 WORKDIR /heis_lab
+COPY . .
+RUN make

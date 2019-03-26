@@ -18,8 +18,8 @@ ELEV_DRIVER_OBJ := $(ELEV_DRIVER_SRC:%.c=$(BUILD_DIR)/%.o)
 ##################
 # Set up toolchain
 ##################
-CC 	:= clang
-CFLAGS 	:= -O0 -g3 -Wall -Werror -std=gnu99
+CC 	:= gcc
+CFLAGS 	:= -O0 -g3 -Wall -std=gnu99
 LDFLAGS := -lcomedi -lm
 
 
@@ -36,6 +36,10 @@ vpath %.c $(SRC_DIR)
 heis: $(OBJ) $(ELEV_DRIVER_OBJ)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $(BUILD_DIR)/$@
 
+queueHandler: $(BUILD_DIR)/queueHandler.o
+	gcc $(CFLAGS) src/main.c -o $(BUILD_DIR)/queueHandler $^
+
+
 $(BUILD_DIR):
 	mkdir $(BUILD_DIR)
 
@@ -44,7 +48,7 @@ $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR)/*
+	rm -rf $(BUILD_DIR)/*S
 
 
 #############################
