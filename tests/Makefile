@@ -1,15 +1,14 @@
 #########################
 #	Toolchain
 #########################
-CC		= clang
-CFLAGS	= 
+CFLAGS	+= -I../src -I ../Unity/src
 
 #########################
 #	Defines
 #########################
 OUTPUT_DIR 	= build
 TESTS		= 
-
+TEST_DEPS	= $(OUTPUT_DIR)/unity.o
 
 #########################
 #	Rules

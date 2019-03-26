@@ -51,6 +51,9 @@ clean:
 # Unit tests.
 #############################
 .PHONY: tests
+export BUILD_DIR
+export CFLAGS
+export CC
 tests:
 	make -C tests
 
