@@ -1,14 +1,15 @@
 pipeline {
-    agent { dockerfile true }
-    environment {
-        BUILD_OUTPUT = "project_build_binary.bin"
-        TEST_OUTPUT = "test_binary.bin"
+    agent { 
+        docker {
+            image 'oskiboy/heis_lab:latest'
+        }
     }
     stages {
         stage('Initialization') {
             steps {
                 sh """
                 mkdir logs
+                echo "Logs Initialized" >> logs/test.log
                 """
             }
         }
@@ -27,27 +28,28 @@ pipeline {
                 sh 'echo "Running Unit Tests:"'
                 sh 'make tests'
                 sh 'echo "Tests built successfully"'
-                sh 'mkdir -p logs && make run_tests > logs/test.log' 
+                sh 'make run_tests >> logs/test.log' 
             }
         }
     }
     post {
-        always {
-            archiveArtifacts artifacts: "logs/*.log"
-            sh '''
-            ls
-            echo "Starting clean"
-            rm -rf build/ logs/
-            '''
-        }
         success {
             sh '''
-            echo "All tests passed!"
+            echo "Build passed!"
             '''
         }
         failure {
             sh '''
             echo "Build failed!"
+            '''
+        }
+        always {
+            archiveArtifacts artifacts: "logs/*.log, build/heis"
+            sh '''
+            ls
+            echo "Starting clean"
+            make clean
+            rm -rf build/ logs/
             '''
         }
     }
