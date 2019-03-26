@@ -10,6 +10,7 @@
 
 
 #define FSM_MODULE(_name)   static fsm_t _name = {INIT_STATE,               \
+                                                  0                         \
                                                   DIRN_STOP,                \
                                                   init_state_function,      \
                                                   {                         \
@@ -20,8 +21,7 @@
                                                   init_state_function,      \
                                                   }};
 
-typedef state_t (state_function_t*)(fsm_t* fsm_p);
-
+typedef state_t (*state_function_t)(fsm_t* fsm_p);
 
 /**
  * @brief The enumeration of the FSMs states.
@@ -38,6 +38,7 @@ typedef enum {
 
 typedef struct {
     state_t state;
+    int init;
     elev_motor_direction_t  dir;
     state_function_t current_state_function;
     const state_function_t state_function_array[STATES_N];
