@@ -50,17 +50,6 @@ clean:
 #############################
 # Unit tests.
 #############################
-UNITY_DIR 	:= Unity/src
-TEST_DIR 	:= tests
-TEST_SOURCES:= 
-TEST_SRC	:= $(TEST_SRC:%.c=$(TEST_DIR)/%.c)
-TESTS		:=
-.PHONY: tests run_tests
-run_tests: tests
-tests: $(BUILD_DIR)/unity
-
-.PHONY: unity
-$(BUILD_DIR)/unity: $(UNITY_DIR)/unity.c
-	$(CC) -o $@ -c $< -I$(UNITY_DIR)
-
-
+.PHONY: tests
+tests:
+	make -C tests
