@@ -1,27 +1,27 @@
 FROM ubuntu:16.04
 LABEL Author oskar.oestby@gmail.com
 
-RUN apt-get update -qq && apt-get upgrade -qqy
+RUN apt-get update -qq && apt-get upgrade -qqy \
+&& apt-get install -qy \
+gcc \
+clang \
+curl \
+zip \
+make \
+autoconf \
+flex \
+bison \
+libtool && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -qy build-essential \
-    gcc \
-    clang \
-    git \
-    cmake \
-    make \
-    autoconf \
-    swig \
-    python \
-    flex \
-    byacc \
-    bison \
-    libtool
-
-RUN git clone https://github.com/Linux-Comedi/comedilib.git
-WORKDIR /comedilib
-RUN ./autogen.sh
-RUN ./configure --with-udev-hotplug=/lib --sysconfdir=/etc
-RUN make && make install
-WORKDIR /
-RUN rm -rf comedilib
+RUN curl -JLO https://github.com/Linux-Comedi/comedilib/archive/master.zip && \
+unzip comedilib-master.zip && \
+cd /comedilib-master && \
+echo "Starting Comedi configuration" &&\
+./autogen.sh && \
+./configure --with-udev-hotplug=/lib --sysconfdir=/etc && \
+make && make install && \
+cd .. && \
+echo "Removing Comedi build remnants" && \
+rm -rf comedilib-master comedilib-master.zip && \
+echo "Build completed!"
 WORKDIR /heis_lab
