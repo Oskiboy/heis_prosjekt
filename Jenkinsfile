@@ -1,5 +1,9 @@
 pipeline {
-    agent { dockerfile true }
+    agent { 
+        docker {
+            image 'oskiboy/heis_lab:latest'
+        }
+    }
     stages {
         stage('Initialization') {
             steps {
