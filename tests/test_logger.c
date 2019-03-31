@@ -4,10 +4,13 @@
 
 
 void setUp(void) {
-    logger_init("test.log");
+    printf("Setting up logger\n");
+    char* filename = "test.log";
+    logger_init(filename);
 }
 
 void tearDown(void) {
+    printf("Closing logger\n");
     logger_close();
 }
 
@@ -25,6 +28,7 @@ void fatal_log_test(void) {
 
 int main(int argc, char** argv) {
     UNITY_BEGIN();
+
     RUN_TEST(info_log_test);
     RUN_TEST(error_log_test);
     RUN_TEST(fatal_log_test);
