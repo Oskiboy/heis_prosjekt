@@ -44,7 +44,11 @@ $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR)/*
+	rm -rf $(BUILD_DIR)/* docs/
+
+.PHONY: docs
+docs:
+	doxygen Doxyfile
 
 #############################
 # Unit tests.
