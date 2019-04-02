@@ -56,3 +56,4 @@ build/
 
 #Cmake
 */CMakeLists.txt
+cmake-build-debug/
