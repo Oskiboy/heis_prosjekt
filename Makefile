@@ -18,9 +18,9 @@ ELEV_DRIVER_OBJ := $(ELEV_DRIVER_SRC:%.c=$(BUILD_DIR)/%.o)
 ##################
 # Set up toolchain
 ##################
-CC 		:= clang
+CC 		:= gcc
 CFLAGS 	:= -O0 -g3 -Wall -Werror -std=gnu99
-LDFLAGS := -lcomedi -lm
+LDFLAGS := -lm
 
 
 
@@ -38,6 +38,9 @@ heis: $(OBJ) $(ELEV_DRIVER_OBJ)
 
 $(BUILD_DIR):
 	mkdir $(BUILD_DIR)
+
+queue_handler: $(BUILD_DIR)/queue_handler.o
+	gcc $(CFLAGS) src/main.c -o $(BUILD_DIR)/queue_handler $^
 
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@

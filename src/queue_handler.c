@@ -162,55 +162,37 @@ void delete_list(node_t ** head){
     while(*head != NULL) pop(head);
 }
 
-
 int check_for_order(node_t ** head, elev_motor_direction_t dir, int floor){
-    int stop = 0;
+    node_t * current = *head;
     if (*head == NULL) {
-        printf("STOP\n");
-        return stop;
+        return -1;
     }
     if((*head)->request.floor == floor){
-        stop = 1;
+        return 1;
     }
 
 
-    node_t * current = *head;
-
-    if (!stop) {
-
-        while (current->next != NULL) {
-            if (current->request.floor == floor &&
-                (current->request.direction == dir || dir == DIRN_STOP || current->request.direction == DIRN_STOP)) {
-                current = remove_node(head, &current);
-                stop = 1;
-            } else current = current->next;
-
-        }
-
+    while (current != NULL) {
         if (current->request.floor == floor &&
             (current->request.direction == dir || dir == DIRN_STOP || current->request.direction == DIRN_STOP)) {
-            stop = 1;
-            remove_last(head);
-        }
-        if ((*head) == NULL) {
-            return stop;
-        }
+            current = remove_node(head, &current);
+            return 1;
+        } else current = current->next;
     }
+    return 0;
+}
 
+void complete_order(node_t ** head,  int floor){
+    if (*head == NULL) return;
+    node_t * current = *head;
     current = *head;
-    if(stop) {
-        while (current->next != NULL) {
-            if (current->request.floor == floor) {
-                current = remove_node(head, &current);
-            } else current = current->next;
-
-        }
-
+    while (current->next != NULL) {
         if (current->request.floor == floor) {
-            remove_last(head);
-        }
-        if (stop) printf("STOP\n");
-        return stop;
+            current = remove_node(head, &current);
+        } else current = current->next;
+
     }
-    return stop;
+    if (current->request.floor == floor) {
+        remove_last(head);
+    }
 }
