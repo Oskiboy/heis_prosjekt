@@ -60,6 +60,11 @@ enum state_enumeration {
     STATES_N
 };
 
+
+/**
+ * @brief The fsm struct that implements the fsm module
+ * 
+ */
 struct fsm_module_struct{
     state_t state;
     int _init;
