@@ -1,4 +1,0 @@
-/home/emil/CLion/clion-2018.2.6/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/usr/bin/g++-8 -G "CodeBlocks - Unix Makefiles" /home/emil/NTNU/TipDat/heis/heis_prosjekt
--- Configuring done
--- Generating done
--- Build files have been written to: /home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug

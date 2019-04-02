@@ -89,4 +89,4 @@ add_executable(heis_prosjekt
         Unity/test/testdata/testRunnerGeneratorSmall.c
         Unity/test/testdata/testRunnerGeneratorWithMocks.c
         Unity/test/tests/testparameterized.c
-        Unity/test/tests/testunity.c src/queueHandler.c src/queueHandler.h)
+        Unity/test/tests/testunity.c src/queue_handler.c src/queue_handler.h src/queue_test.c)

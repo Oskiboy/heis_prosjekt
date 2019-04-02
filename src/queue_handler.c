@@ -2,7 +2,7 @@
 // Created by emil on 26.03.19.
 //
 
-#include "queueHandler.h"
+#include "queue_handler.h"
 #include <stdio.h>
 
 node_t* init_list(request_t request){

@@ -22,10 +22,7 @@ typedef struct node {
     struct node * last;
 } node_t;
 
-/*typedef struct {
-    int (*check_for_order)(queue_handler_t* self, elev_motor_direction_t dir, int floor);
-    node_t* _head;
-}queue_handler_t;*/
+
 
 node_t* init_list(request_t request);
 
