@@ -53,6 +53,8 @@ dkms.conf
 
 build/
 .vscode
+docs/
+*.log
 
 #Cmake
 */CMakeLists.txt

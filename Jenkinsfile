@@ -1,11 +1,18 @@
 pipeline {
-    agent { dockerfile true }
+    agent { 
+        dockerfile {
+            filename 'Dockerfile'
+            dir 'Docker'
+        }
+    }
     stages {
         stage('Initialization') {
             steps {
                 sh """
                 mkdir logs
                 echo "Logs Initialized" >> logs/test.log
+                git submodule init
+                git submodule update
                 """
             }
         }

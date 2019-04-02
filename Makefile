@@ -2,24 +2,24 @@
 # Set up variables
 ###################
 
-SOURCES 		:= main.c
-ELEV_DRIVER_SRC 	:= elev.c io.c
+SOURCES 		:= main.c logger.c
+ELEV_DRIVER_SRC := elev.c io.c
 BUILD_DIR 		:= build
 SRC_DIR 		:= src
 
 ##################
 # Import all source files.
 ##################
-OBJ 		:= $(SOURCES:%.c=$(BUILD_DIR)/%.o)
-SRC 		:= $(SOURCES:%.c=$(SRC_DIR)/%.c)
+OBJ 			:= $(SOURCES:%.c=$(BUILD_DIR)/%.o)
+SRC 			:= $(SOURCES:%.c=$(SRC_DIR)/%.c)
 ELEV_DRIVER_OBJ := $(ELEV_DRIVER_SRC:%.c=$(BUILD_DIR)/%.o)
 
 
 ##################
 # Set up toolchain
 ##################
-CC 	:= gcc
-CFLAGS 	:= -O0 -g3 -Wall -std=gnu99
+CC 		:= clang
+CFLAGS 	:= -O0 -g3 -Wall -Werror -std=gnu99
 LDFLAGS := -lcomedi -lm
 
 
@@ -48,23 +48,22 @@ $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR)/*S
+	rm -rf $(BUILD_DIR)/*
+
+.PHONY: docs
+docs:
+	doxygen Doxyfile
 
 
 #############################
 # Unit tests.
 #############################
-UNITY_DIR 	:= Unity/src
-TEST_DIR 	:= tests
-TEST_SOURCES:= 
-TEST_SRC	:= $(TEST_SRC:%.c=$(TEST_DIR)/%.c)
-TESTS		:=
-.PHONY: tests run_tests
-run_tests: tests
-tests: $(BUILD_DIR)/unity
+.PHONY: tests
+export BUILD_DIR
+export CFLAGS
+export CC
+tests:
+	make -C tests
 
-.PHONY: unity
-$(BUILD_DIR)/unity: $(UNITY_DIR)/unity.c
-	$(CC) -o $@ -c $< -I$(UNITY_DIR)
-
-
+run_tests:
+	make -C tests run_tests
