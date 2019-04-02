@@ -59,3 +59,7 @@ export CFLAGS
 export CC
 tests: heis
 	make -C tests
+
+run_tests: tests
+	make -C tests run_tests
+

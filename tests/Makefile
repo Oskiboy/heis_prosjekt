@@ -8,7 +8,7 @@ LDFLAGS =
 #########################
 OUTPUT_DIR 	= build
 TESTS		= fsm_tests
-TEST_DEPS	= $(OUTPUT_DIR)/unity.o $(OUTPUT_DIR)/elev.o
+TEST_DEPS	= $(OUTPUT_DIR)/unity.o libelev_wrapper.a
 
 #########################
 #	Rules
@@ -17,6 +17,9 @@ TEST_DEPS	= $(OUTPUT_DIR)/unity.o $(OUTPUT_DIR)/elev.o
 
 all: $(OUTPUT_DIR) fsm_tests
 	@echo "Building tests"
+
+run_tests:
+	./fsm_tests
 
 $(OUTPUT_DIR)/unity.o:../Unity/src/unity.c | $(OUTPUT_DIR)
 	$(CC) -o $@ -c $< $(CFLAGS)
