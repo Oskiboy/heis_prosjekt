@@ -11,8 +11,8 @@ pipeline {
                 sh """
                 mkdir logs
                 echo "Logs Initialized" >> logs/test.log
-                git submodules init
-                git submodules update
+                git submodule init
+                git submodule update
                 """
             }
         }
