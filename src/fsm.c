@@ -26,7 +26,7 @@ state_t up_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     }
 
     //If we have an order on the current floor with the correct direction, stop.
-    if(queue_p->check_for_order(queue_p, fsm_p->_dir)){
+    if(queue_p->check_for_order(queue_p, fsm_p->_dir) > 0){
         return SERVE_ORDER_STATE;
     }
 
@@ -45,7 +45,6 @@ state_t down_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     }
 
     //If we have an order on the current floor with the correct direction, stop.
-
     if(queue_p->check_for_order(queue_p, fsm_p->_dir) > 0){
         return SERVE_ORDER_STATE;
     }
@@ -87,9 +86,7 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_timestamp = time(NULL);
         elev_set_door_open_lamp(1);
-    }
-
-    if(time(NULL) - fsm_p->_timestamp >= 3) {
+    } else if(time(NULL) - fsm_p->_timestamp >= 3) {
         elev_set_door_open_lamp(0);
         //Order completed!
         return STANDBY_STATE;
