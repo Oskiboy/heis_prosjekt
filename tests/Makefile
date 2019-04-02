@@ -7,7 +7,7 @@ CFLAGS	+= -I../src -I ../Unity/src
 #	Defines
 #########################
 OUTPUT_DIR 	= build
-TESTS		= fsm_tests logger_test
+TESTS		= logger_test
 TEST_DEPS	= $(OUTPUT_DIR)/unity.o libelev_wrapper.a
 
 #########################
@@ -23,8 +23,6 @@ all: $(OUTPUT_DIR)/unity.o $(TESTS)
 run_tests: all
 	echo "LOGGER TESTS:"
 	./logger_test
-	echo "FSM TESTS:"
-	./fsm_tests
 
 logger_test: ../build/logger.o test_logger.c $(TEST_DEPS)
 	$(CC) -o $@ $^ $(CFLAGS)
