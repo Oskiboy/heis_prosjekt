@@ -50,7 +50,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/heis_prosjekt.dir/Unity/test/testdata/testRunnerGeneratorWithMocks.c.o"
   "CMakeFiles/heis_prosjekt.dir/Unity/test/tests/testparameterized.c.o"
   "CMakeFiles/heis_prosjekt.dir/Unity/test/tests/testunity.c.o"
-  "CMakeFiles/heis_prosjekt.dir/src/linkedList.c.o"
+  "CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.o"
   "heis_prosjekt.pdb"
   "heis_prosjekt"
 )

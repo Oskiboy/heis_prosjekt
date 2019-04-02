@@ -720,18 +720,18 @@ CMakeFiles/heis_prosjekt.dir/Unity/test/tests/testunity.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/heis_prosjekt.dir/Unity/test/tests/testunity.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/emil/NTNU/TipDat/heis/heis_prosjekt/Unity/test/tests/testunity.c -o CMakeFiles/heis_prosjekt.dir/Unity/test/tests/testunity.c.s
 
-CMakeFiles/heis_prosjekt.dir/src/linkedList.c.o: CMakeFiles/heis_prosjekt.dir/flags.make
-CMakeFiles/heis_prosjekt.dir/src/linkedList.c.o: ../src/linkedList.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building C object CMakeFiles/heis_prosjekt.dir/src/linkedList.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/heis_prosjekt.dir/src/linkedList.c.o   -c /home/emil/NTNU/TipDat/heis/heis_prosjekt/src/linkedList.c
+CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.o: CMakeFiles/heis_prosjekt.dir/flags.make
+CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.o: ../src/queueHandler.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building C object CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.o   -c /home/emil/NTNU/TipDat/heis/heis_prosjekt/src/queueHandler.c
 
-CMakeFiles/heis_prosjekt.dir/src/linkedList.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/heis_prosjekt.dir/src/linkedList.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/emil/NTNU/TipDat/heis/heis_prosjekt/src/linkedList.c > CMakeFiles/heis_prosjekt.dir/src/linkedList.c.i
+CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/emil/NTNU/TipDat/heis/heis_prosjekt/src/queueHandler.c > CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.i
 
-CMakeFiles/heis_prosjekt.dir/src/linkedList.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/heis_prosjekt.dir/src/linkedList.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/emil/NTNU/TipDat/heis/heis_prosjekt/src/linkedList.c -o CMakeFiles/heis_prosjekt.dir/src/linkedList.c.s
+CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/emil/NTNU/TipDat/heis/heis_prosjekt/src/queueHandler.c -o CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.s
 
 # Object files for target heis_prosjekt
 heis_prosjekt_OBJECTS = \
@@ -786,7 +786,7 @@ heis_prosjekt_OBJECTS = \
 "CMakeFiles/heis_prosjekt.dir/Unity/test/testdata/testRunnerGeneratorWithMocks.c.o" \
 "CMakeFiles/heis_prosjekt.dir/Unity/test/tests/testparameterized.c.o" \
 "CMakeFiles/heis_prosjekt.dir/Unity/test/tests/testunity.c.o" \
-"CMakeFiles/heis_prosjekt.dir/src/linkedList.c.o"
+"CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.o"
 
 # External object files for target heis_prosjekt
 heis_prosjekt_EXTERNAL_OBJECTS =
@@ -842,7 +842,7 @@ heis_prosjekt: CMakeFiles/heis_prosjekt.dir/Unity/test/testdata/testRunnerGenera
 heis_prosjekt: CMakeFiles/heis_prosjekt.dir/Unity/test/testdata/testRunnerGeneratorWithMocks.c.o
 heis_prosjekt: CMakeFiles/heis_prosjekt.dir/Unity/test/tests/testparameterized.c.o
 heis_prosjekt: CMakeFiles/heis_prosjekt.dir/Unity/test/tests/testunity.c.o
-heis_prosjekt: CMakeFiles/heis_prosjekt.dir/src/linkedList.c.o
+heis_prosjekt: CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.o
 heis_prosjekt: CMakeFiles/heis_prosjekt.dir/build.make
 heis_prosjekt: CMakeFiles/heis_prosjekt.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Linking C executable heis_prosjekt"

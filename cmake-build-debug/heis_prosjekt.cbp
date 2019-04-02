@@ -304,9 +304,6 @@
 		<Unit filename="/home/emil/NTNU/TipDat/heis/heis_prosjekt/Unity/test/tests/testunity.c">
 			<Option target="heis_prosjekt"/>
 		</Unit>
-		<Unit filename="/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/QueueHandler.h">
-			<Option target="heis_prosjekt"/>
-		</Unit>
 		<Unit filename="/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/channels.h">
 			<Option target="heis_prosjekt"/>
 		</Unit>
@@ -322,13 +319,13 @@
 		<Unit filename="/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/io.h">
 			<Option target="heis_prosjekt"/>
 		</Unit>
-		<Unit filename="/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/linkedList.c">
-			<Option target="heis_prosjekt"/>
-		</Unit>
-		<Unit filename="/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/linkedList.h">
-			<Option target="heis_prosjekt"/>
-		</Unit>
 		<Unit filename="/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/main.c">
+			<Option target="heis_prosjekt"/>
+		</Unit>
+		<Unit filename="/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/queueHandler.c">
+			<Option target="heis_prosjekt"/>
+		</Unit>
+		<Unit filename="/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/queueHandler.h">
 			<Option target="heis_prosjekt"/>
 		</Unit>
 		<Unit filename="/home/emil/NTNU/TipDat/heis/heis_prosjekt/CMakeLists.txt">

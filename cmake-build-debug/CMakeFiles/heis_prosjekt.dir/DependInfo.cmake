@@ -54,8 +54,8 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/emil/NTNU/TipDat/heis/heis_prosjekt/Unity/test/tests/testunity.c" "/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles/heis_prosjekt.dir/Unity/test/tests/testunity.c.o"
   "/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/elev.c" "/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles/heis_prosjekt.dir/src/elev.c.o"
   "/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/io.c" "/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles/heis_prosjekt.dir/src/io.c.o"
-  "/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/linkedList.c" "/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles/heis_prosjekt.dir/src/linkedList.c.o"
   "/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/main.c" "/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles/heis_prosjekt.dir/src/main.c.o"
+  "/home/emil/NTNU/TipDat/heis/heis_prosjekt/src/queueHandler.c" "/home/emil/NTNU/TipDat/heis/heis_prosjekt/cmake-build-debug/CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

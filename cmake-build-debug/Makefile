@@ -1473,33 +1473,6 @@ src/io.c.s:
 	$(MAKE) -f CMakeFiles/heis_prosjekt.dir/build.make CMakeFiles/heis_prosjekt.dir/src/io.c.s
 .PHONY : src/io.c.s
 
-src/linkedList.o: src/linkedList.c.o
-
-.PHONY : src/linkedList.o
-
-# target to build an object file
-src/linkedList.c.o:
-	$(MAKE) -f CMakeFiles/heis_prosjekt.dir/build.make CMakeFiles/heis_prosjekt.dir/src/linkedList.c.o
-.PHONY : src/linkedList.c.o
-
-src/linkedList.i: src/linkedList.c.i
-
-.PHONY : src/linkedList.i
-
-# target to preprocess a source file
-src/linkedList.c.i:
-	$(MAKE) -f CMakeFiles/heis_prosjekt.dir/build.make CMakeFiles/heis_prosjekt.dir/src/linkedList.c.i
-.PHONY : src/linkedList.c.i
-
-src/linkedList.s: src/linkedList.c.s
-
-.PHONY : src/linkedList.s
-
-# target to generate assembly for a file
-src/linkedList.c.s:
-	$(MAKE) -f CMakeFiles/heis_prosjekt.dir/build.make CMakeFiles/heis_prosjekt.dir/src/linkedList.c.s
-.PHONY : src/linkedList.c.s
-
 src/main.o: src/main.c.o
 
 .PHONY : src/main.o
@@ -1526,6 +1499,33 @@ src/main.s: src/main.c.s
 src/main.c.s:
 	$(MAKE) -f CMakeFiles/heis_prosjekt.dir/build.make CMakeFiles/heis_prosjekt.dir/src/main.c.s
 .PHONY : src/main.c.s
+
+src/queueHandler.o: src/queueHandler.c.o
+
+.PHONY : src/queueHandler.o
+
+# target to build an object file
+src/queueHandler.c.o:
+	$(MAKE) -f CMakeFiles/heis_prosjekt.dir/build.make CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.o
+.PHONY : src/queueHandler.c.o
+
+src/queueHandler.i: src/queueHandler.c.i
+
+.PHONY : src/queueHandler.i
+
+# target to preprocess a source file
+src/queueHandler.c.i:
+	$(MAKE) -f CMakeFiles/heis_prosjekt.dir/build.make CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.i
+.PHONY : src/queueHandler.c.i
+
+src/queueHandler.s: src/queueHandler.c.s
+
+.PHONY : src/queueHandler.s
+
+# target to generate assembly for a file
+src/queueHandler.c.s:
+	$(MAKE) -f CMakeFiles/heis_prosjekt.dir/build.make CMakeFiles/heis_prosjekt.dir/src/queueHandler.c.s
+.PHONY : src/queueHandler.c.s
 
 # Help Target
 help:
@@ -1686,12 +1686,12 @@ help:
 	@echo "... src/io.o"
 	@echo "... src/io.i"
 	@echo "... src/io.s"
-	@echo "... src/linkedList.o"
-	@echo "... src/linkedList.i"
-	@echo "... src/linkedList.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/queueHandler.o"
+	@echo "... src/queueHandler.i"
+	@echo "... src/queueHandler.s"
 .PHONY : help
 
 

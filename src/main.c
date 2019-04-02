@@ -11,7 +11,7 @@ int main() {
     node_t* queue = NULL;
 
     int stamp = 0;
-    for(int i = 0; i < 20; i++) {
+    for(int i = 0; i < 200; i++) {
         request_t req;
         req.floor = rand()%4;
         if (req.floor ==0) req.direction = rand()%2;
@@ -21,39 +21,31 @@ int main() {
         stamp++;
         push(&queue, req);
     }
-    /*
 
+    /*
     print_list(queue);
+    delete_list(queue);
+    print_list((queue));
     check_for_order(&queue, 0, 1);
     print_list(queue);
-
-
-    node_t * current;
-    current = (queue);
-    while (queue != NULL) {
-        pop(&queue);
-    }
-    printf("\n");
-    print_list(queue);
-
 */
+
+
 
     elev_motor_direction_t dir = DIRN_STOP;
     int floor = 0;
     int next_floor = queue->request.floor;
-    int retval;
 
 
     int n = 0;
     while(1) {
+        //print_list(queue);
         printf("\nn: %d  floor: %d  next_floor: %d  dir: %d\n",n, floor, next_floor, (int)dir);
-        print_list(queue);
-        
-        retval = check_for_order(&queue, dir, floor);
+        check_for_order(&queue, dir, floor);
         print_list(queue);
 
         if (queue == NULL) {
-            printf("waiting\n");
+            //printf("waiting\n");
             dir = 0;
         }
         else {
@@ -66,9 +58,9 @@ int main() {
         if (dir == DIRN_DOWN) floor -= 1;
 
         if(rand()%5 == 0) {
-            printf("\nnew stuff");
+            printf("\nnew stuff\n");
 
-            for (int i = 0; i < 2; i++) {
+            while (rand()%3 != 0) {
 
                 request_t req;
                 req.floor = rand() % 4;
@@ -80,9 +72,11 @@ int main() {
 
                 push(&queue, req);
             }
+            print_list(queue);
+
         }
         n++;
-        if (n>100) break;
+        if (n>10) break;
     }
 
 

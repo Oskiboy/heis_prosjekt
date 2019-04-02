@@ -166,6 +166,7 @@ void delete_list(node_t ** head){
 int check_for_order(node_t ** head, elev_motor_direction_t dir, int floor){
     int stop = 0;
     if (*head == NULL) {
+        printf("STOP\n");
         return stop;
     }
     if((*head)->request.floor == floor){
@@ -174,7 +175,6 @@ int check_for_order(node_t ** head, elev_motor_direction_t dir, int floor){
 
 
     node_t * current = *head;
-    node_t * temp_p = NULL;
 
     if (!stop) {
 
@@ -198,7 +198,6 @@ int check_for_order(node_t ** head, elev_motor_direction_t dir, int floor){
     }
 
     current = *head;
-    temp_p = NULL;
     if(stop) {
         while (current->next != NULL) {
             if (current->request.floor == floor) {
@@ -213,4 +212,5 @@ int check_for_order(node_t ** head, elev_motor_direction_t dir, int floor){
         if (stop) printf("STOP\n");
         return stop;
     }
+    return stop;
 }
