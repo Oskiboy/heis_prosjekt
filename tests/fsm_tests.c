@@ -21,7 +21,6 @@ void setUp(void) {
     q.clear_queue=empty_function;
     q.next_order=motor_dir;
     q.check_for_order=order;
-    elev_init();
 }
 
 void tearDown(void) {
@@ -37,8 +36,6 @@ void stop_test(void) {
 
 int main(int argc, char** argv) {
     UNITY_BEGIN();
-
-    RUN_TEST(stop_test);
-
+    elev_init();
     return UNITY_END();
 }
