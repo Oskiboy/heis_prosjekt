@@ -2,7 +2,7 @@
 # Set up variables
 ###################
 
-SOURCES 		:= main.c
+SOURCES 		:= main.c logger.c
 ELEV_DRIVER_SRC := elev.c io.c
 BUILD_DIR 		:= build
 SRC_DIR 		:= src
@@ -51,5 +51,11 @@ clean:
 # Unit tests.
 #############################
 .PHONY: tests
+export BUILD_DIR
+export CFLAGS
+export CC
 tests:
 	make -C tests
+
+run_tests:
+	make -C tests run_tests
