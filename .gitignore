@@ -57,7 +57,7 @@ docs/
 *.log
 
 #Cmake
-*/CMakeLists.txt
+CMakeLists.txt
 cmake-build-debug/
 
 .idea/
