@@ -34,18 +34,22 @@ void stop_test(void) {
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[INIT_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL(STOP_STATE, fsm_test_m.state);
+
     write_to_socket(cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[UP_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL(STOP_STATE, fsm_test_m.state);
+
     write_to_socket(cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[DOWN_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL(STOP_STATE, fsm_test_m.state);
+
     write_to_socket(cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[STANDBY_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL(STOP_STATE, fsm_test_m.state);
+    
     write_to_socket(cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[SERVE_ORDER_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
