@@ -7,7 +7,8 @@ CFLAGS	+= -I../src -I ../Unity/src
 #	Defines
 #########################
 OUTPUT_DIR 	= build
-TESTS		= logger_test
+TESTS		= logger_tests fsm_tests
+TESTS		:= $(addprefix $(OUTPUT_DIR)/,$(TESTS))
 TEST_DEPS	= $(OUTPUT_DIR)/unity.o libelev_wrapper.a
 
 #########################
@@ -15,26 +16,27 @@ TEST_DEPS	= $(OUTPUT_DIR)/unity.o libelev_wrapper.a
 #########################
 .DEFAULT_RULE: all
 	
-.PHONY: all run_tests logger_test clean
+.PHONY: all run_tests logger_tests clean
 
 all: $(OUTPUT_DIR)/unity.o $(TESTS)
 	@echo "Building tests"
 
 run_tests: all
-	echo "LOGGER TESTS:"
-	./logger_test
+	@echo "Running tests"
+	./build/logger_tests
+	./build/fsm_tests
 
-logger_test: ../build/logger.o test_logger.c $(TEST_DEPS)
+$(OUTPUT_DIR)/logger_tests: ../build/logger.o test_logger.c $(TEST_DEPS)
 	$(CC) -o $@ $^ $(CFLAGS)
 
-fsm_tests: fsm_tests.c ../$(BUILD_DIR)/fsm.o $(TEST_DEPS)
+$(OUTPUT_DIR)/fsm_tests: fsm_tests.c ../$(BUILD_DIR)/fsm.o $(TEST_DEPS)
 	$(CC) -o $@ $^  $(CFLAGS) $(LDFLAGS)
 
 $(OUTPUT_DIR)/unity.o:../Unity/src/unity.c | $(OUTPUT_DIR)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 $(OUTPUT_DIR)/elev.o: elev.c elev.h
-	$(CC) -o $@ -c $< $(CFLAGS) -I.
+	$(CC) -o $@ -c $< $(CFLAGS)
 
 $(OUTPUT_DIR):
 	mkdir $(OUTPUT_DIR)
