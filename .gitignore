@@ -55,4 +55,4 @@ build/
 .vscode
 docs/
 *.log
-tests/libelev_wrapper.a
+*libelev_wrapper.a
