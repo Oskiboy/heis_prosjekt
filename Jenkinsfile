@@ -8,6 +8,9 @@ pipeline {
     stages {
         stage('Initialization') {
             steps {
+                dir('ElevatorSimulator') {
+                    deleteDir()
+                }
                 sh """
                 mkdir logs
                 echo "Logs Initialized" >> logs/test.log
@@ -29,7 +32,7 @@ pipeline {
         stage('Get Simulator') {
             steps {
                 dir('ElevatorSimulator') {
-                    deleteDir()
+                    sh 'pwd; ls'
                     copyArtifact(projectName: 'ElevatorSimulator', excludes: '*.log', flatten: true)
                     sh 'pwd; ls'
                 }
