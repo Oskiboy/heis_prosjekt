@@ -26,12 +26,27 @@ pipeline {
                 sh 'echo "Build complete..."'
             }
         }
+        stage('Get Simulator') {
+            dir('ElevatorSimulator') {
+                deleteDir()
+                copyArtifact(projectName: 'ElevatorSimulator', excludes: '*.log', flatten: true)
+                sh 'pwd; ls'
+            }
+        }
         stage('UnitTests') {
             steps {
+                sh 'mv ElevatorSimulator/libelev_wrapper.a tests/'
                 sh 'echo "Running Unit Tests:"'
                 sh 'make tests'
                 sh 'echo "Tests built successfully"'
-                sh 'make run_tests >> logs/test.log' 
+                sh '''
+                echo "Running server..."
+                ./ElevatorSimulator/sim_server &
+                export SERVER_PID=$!
+                make run_tests >> logs/test.log
+                echo "Tests finished, killing server..."
+                kill $SERVER_PID
+                ''' 
             }
         }
     }
