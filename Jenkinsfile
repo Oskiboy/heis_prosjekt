@@ -31,7 +31,8 @@ pipeline {
         }
         stage('Get Simulator') {
             steps {
-                copyArtifacts(projectName: 'ElevatorSimulator', excludes: '*.log', target: ElevatorSimulator, flatten: true);
+                copyArtifacts(projectName: 'ElevatorSimulator');
+                sh 'ls'
             }
         }
         stage('UnitTests') {
