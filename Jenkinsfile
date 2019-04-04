@@ -27,10 +27,12 @@ pipeline {
             }
         }
         stage('Get Simulator') {
-            dir('ElevatorSimulator') {
-                deleteDir()
-                copyArtifact(projectName: 'ElevatorSimulator', excludes: '*.log', flatten: true)
-                sh 'pwd; ls'
+            steps {
+                dir('ElevatorSimulator') {
+                    deleteDir()
+                    copyArtifact(projectName: 'ElevatorSimulator', excludes: '*.log', flatten: true)
+                    sh 'pwd; ls'
+                }
             }
         }
         stage('UnitTests') {
