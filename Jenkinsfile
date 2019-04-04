@@ -33,7 +33,7 @@ pipeline {
             steps {
                 dir('ElevatorSimulator') {
                     sh 'pwd; ls'
-                    copyArtifact(projectName: 'ElevatorSimulator', excludes: '*.log', flatten: true)
+                    copyArtifacts(projectName: 'ElevatorSimulator', excludes: '*.log', flatten: true)
                     sh 'pwd; ls'
                 }
             }
