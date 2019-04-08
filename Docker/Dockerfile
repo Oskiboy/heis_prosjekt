@@ -3,6 +3,7 @@ LABEL Author oskar.oestby@gmail.com
 
 RUN apt-get update -qq && apt-get upgrade -qqy \
 && apt-get install -qy \
+build-essential \
 gcc \
 git \
 cmake \
