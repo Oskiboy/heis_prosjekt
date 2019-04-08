@@ -108,7 +108,7 @@ state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     }
 
     //If the elevator is at a floor, it should open the doors.
-    if(elev_get_floor_sensor_signal() > 0) {
+    if(elev_get_floor_sensor_signal() >= 0) {
         elev_set_door_open_lamp(1);
     }
 
@@ -137,7 +137,7 @@ state_t init_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         fsm_p->_dir = DIRN_DOWN;
     }
 
-    if(elev_get_floor_sensor_signal() > 0) {
+    if(elev_get_floor_sensor_signal() >= 0) {
         fsm_p->_init = 1;
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
