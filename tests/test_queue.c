@@ -1,15 +1,14 @@
+#include "unity.h"
 #include <stdio.h>
 #include "queue_handler.h"
 #include <stdlib.h>
 #include <time.h>
 
-int main() {
+void test_some_thing_to_test(void) {
     printf("\n");
     srand(time(NULL));
 
-
     node_t* queue = NULL;
-
     int stamp = 0;
     for(int i = 0; i < 200; i++) {
         request_t req;
@@ -28,9 +27,7 @@ int main() {
     print_list((queue));
     check_for_order(&queue, 0, 1);
     print_list(queue);
-*/
-
-
+    */
 
     elev_motor_direction_t dir = DIRN_STOP;
     int floor = 0;
@@ -79,12 +76,14 @@ int main() {
         if (n>10) break;
     }
 
-
-
-
-
     //remove_by_index(&queue, 2);
     //print_list(queue);
     delete_list(&queue);
-    return 0;
+}
+
+
+int main() {
+    UNITY_BEGIN();
+    RUN_TEST(test_some_thing_to_test);
+    return UNITY_END();
 }
