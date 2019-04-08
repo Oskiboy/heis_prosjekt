@@ -38,6 +38,7 @@ void setUp(void) {
     q.clear_queue=empty_function;
     q.next_order=motor_dir;
     q.check_for_order=order;
+    fsm_test_m._dir = 0;
     write_to_socket(reset_cmd);
 }
 
