@@ -8,9 +8,6 @@ pipeline {
     stages {
         stage('Initialization') {
             steps {
-                dir('ElevatorSimulator') {
-                    deleteDir()
-                }
                 sh """
                 mkdir logs
                 echo "Logs Initialized" >> logs/test.log
@@ -29,21 +26,24 @@ pipeline {
                 sh 'echo "Build complete..."'
             }
         }
-        stage('Get Simulator') {
-            steps {
-                copyArtifacts(projectName: 'ElevatorSimulator');
-                sh 'ls'
+        stage('Build simulator') {
+            steps {
+                sh '''
+                cd elevator_simulator
+                ./build.sh
+                ./build_wrapper.sh
+                '''
             }
         }
         stage('UnitTests') {
             steps {
-                sh 'mv ElevatorSimulator/libelev_wrapper.a tests/'
+                sh 'mv elevator_simulator/libelev_wrapper.a tests/'
                 sh 'echo "Running Unit Tests:"'
                 sh 'make tests'
                 sh 'echo "Tests built successfully"'
                 sh '''
                 echo "Running server..."
-                ./ElevatorSimulator/sim_server &
+                ./elevator_simulator/build/sim_server &
                 export SERVER_PID=$!
                 make run_tests >> logs/test.log
                 echo "Tests finished, killing server..."
