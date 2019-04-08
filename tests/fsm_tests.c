@@ -7,7 +7,7 @@ FSM_MODULE(fsm_test_m);
 order_queue_t q;
 
 static unsigned char obs_cmd[4]         = {10, 4, 0 , 2};
-static unsigned char pos_cmd[4]         = {253, 0, 0, 80};
+static unsigned char pos_cmd[4]         = {253, 0, 0, 60};
 static unsigned char stop_btn_cmd[4]    = {10, 3, 0, 2};
 static unsigned char reset_cmd[4]       = {254, 0, 0, 0};
 
