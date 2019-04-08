@@ -46,7 +46,8 @@ pipeline {
                 ./elevator_simulator/build/sim_server > /dev/null 2>&1 &
                 export SERVER_PID=$!
                 echo $SERVER_PID
-                ps a | grep sim_server >> test_logs/test.log
+                sleep 1
+                ps a >> test_logs/test.log
                 make run_tests >> test_logs/test.log
                 echo "Tests finished, killing server..."
                 kill $SERVER_PID
