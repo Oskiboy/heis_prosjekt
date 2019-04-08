@@ -27,7 +27,7 @@ pipeline {
             }
         }
         stage('Build simulator') {
-            steps {
+            steps {
                 sh '''
                 cd elevator_simulator
                 ./build.sh
