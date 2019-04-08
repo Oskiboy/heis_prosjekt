@@ -15,18 +15,20 @@
  */ 
 
 
-#define FSM_MODULE(_name)   static fsm_t _name = {INIT_STATE,                   \
-                                                  0,                            \
-                                                  DIRN_STOP,                    \
-                                                  init_state_function,          \
-                                                  {                             \
-                                                  up_state_function,            \
-                                                  down_state_function,          \
-                                                  standby_state_function,       \
-                                                  serve_order_state_function,   \
-                                                  stop_state_function,          \
-                                                  init_state_function           \
-                                                  }};
+#define FSM_MODULE(_name)   \
+static fsm_t _name =        \
+{INIT_STATE,                \
+0,                          \
+DIRN_STOP,                  \
+init_state_function,        \
+{                           \
+up_state_function,          \
+down_state_function,        \
+standby_state_function,     \
+serve_order_state_function, \
+stop_state_function,        \
+init_state_function         \
+}};
 
 enum state_enumeration;
 struct fsm_module_struct;
