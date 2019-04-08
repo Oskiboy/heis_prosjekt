@@ -42,6 +42,7 @@ pipeline {
                 sh 'make tests'
                 sh 'echo "Tests built successfully"'
                 sh '''
+                set -m
                 echo "Running server..."
                 ./elevator_simulator/build/sim_server > /dev/null 2>&1 &
                 export SERVER_PID=$!
