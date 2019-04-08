@@ -4,16 +4,16 @@
 
 #ifndef HEIS_PROSJEKT_LINKEDLIST_H
 #define HEIS_PROSJEKT_LINKEDLIST_H
+
 #include <stdlib.h>
 #include "elev.h"
-#endif //HEIS_PROSJEKT_LINKEDLIST_H
 
-#define QUEUE_MODULE (_name) \
-static order_queue_t _name = {\
-NULL, -1, DIRN_STOP, update, deleate_list, check_for_order, get_ direction, complete_order \
+#define QUEUE_MODULE (_name)    \
+static order_queue_t _name = {  \
+NULL, -1, DIRN_STOP, update,    \
+delete_list, check_for_order,   \
+get_ direction, complete_order  \
 }
-
-
 
 
 typedef struct request {
@@ -44,7 +44,6 @@ struct order_queue_struct{
 };
 
 
-
 node_t* init_list(request_t request);
 
 void print_list(node_t * head);
@@ -68,3 +67,4 @@ void complete_order(node_t ** head, int floor);
 void update(node_t ** head);
 
 
+#endif //HEIS_PROSJEKT_LINKEDLIST_H
