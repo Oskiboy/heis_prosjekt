@@ -43,8 +43,10 @@ pipeline {
                 sh 'echo "Tests built successfully"'
                 sh '''
                 echo "Running server..."
-                ./elevator_simulator/build/sim_server &
+                ./elevator_simulator/build/sim_server > /dev/null 2>&1 &
                 export SERVER_PID=$!
+                echo $SERVER_PID
+                ps a | grep sim_server
                 make run_tests >> logs/test.log
                 echo "Tests finished, killing server..."
                 kill $SERVER_PID
