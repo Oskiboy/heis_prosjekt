@@ -75,7 +75,7 @@ pipeline {
             ls
             echo "Starting clean"
             make clean
-            rm -rf build/ test_logs/ logs/
+            rm -rf build/ test_logs/ logs/ tests/build/
             '''
         }
     }
