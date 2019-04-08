@@ -4,13 +4,11 @@
 
 
 void setUp(void) {
-    printf("Setting up logger\n");
     char* filename = "test.log";
     logger_init(filename);
 }
 
 void tearDown(void) {
-    printf("Closing logger\n");
     logger_close();
 }
 
