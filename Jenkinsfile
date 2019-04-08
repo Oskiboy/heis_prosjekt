@@ -9,8 +9,8 @@ pipeline {
         stage('Initialization') {
             steps {
                 sh """
-                mkdir logs
-                echo "Logs Initialized" >> logs/test.log
+                mkdir test_logs logs
+                echo "Logs Initialized" >> test_logs/test.log
                 git submodule init
                 git submodule update
                 """
@@ -46,8 +46,8 @@ pipeline {
                 ./elevator_simulator/build/sim_server > /dev/null 2>&1 &
                 export SERVER_PID=$!
                 echo $SERVER_PID
-                ps a | grep sim_server | echo -
-                make run_tests >> logs/test.log
+                ps a | grep sim_server >> test_logs/test.log
+                make run_tests >> test_logs/test.log
                 echo "Tests finished, killing server..."
                 kill $SERVER_PID
                 ''' 
@@ -66,12 +66,12 @@ pipeline {
             '''
         }
         always {
-            archiveArtifacts artifacts: "logs/*.log, build/heis"
+            archiveArtifacts artifacts: "test_logs/*.log, build/heis, logs/*.log"
             sh '''
             ls
             echo "Starting clean"
             make clean
-            rm -rf build/ logs/
+            rm -rf build/ test_logs/ logs/
             '''
         }
     }
