@@ -5,6 +5,7 @@ RUN apt-get update -qq && apt-get upgrade -qqy \
 && apt-get install -qy \
 gcc \
 git \
+cmake \
 clang \
 make \
 autoconf \
