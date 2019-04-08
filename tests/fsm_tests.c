@@ -80,7 +80,7 @@ void test_init_state_transitions(void) {
     write_to_socket(pos_cmd);   //Resets the elevator to a little below second floor
     ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(INIT_STATE, ret, "As the elevator is not at a floor, the init state should not transition.");
-    sleep(2);   //Should take less than a second to reach first floor.
+    sleep(3);   //Should take less than a second to reach first floor.
     ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STANDBY_STATE, ret, "As the elevator should have reached the bottom floor, the fsm should transition");
 }
