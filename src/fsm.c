@@ -1,5 +1,6 @@
 #include "fsm.h"
 #include "elev.h"
+#include "stdio.h"
 
 int run_fsm(fsm_t* fsm_p, order_queue_t* queue_p) {
     //If the FSM has no queue, return an error.
@@ -136,8 +137,9 @@ state_t init_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         elev_set_motor_direction(DIRN_DOWN);
         fsm_p->_dir = DIRN_DOWN;
     }
-
-    if(elev_get_floor_sensor_signal() >= 0) {
+    int floor = elev_get_floor_sensor_signal();
+    if(floor >= 0) {
+        printf("%d\n", floor);
         fsm_p->_init = 1;
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
