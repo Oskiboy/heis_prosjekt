@@ -7,7 +7,7 @@ FSM_MODULE(fsm_test_m);
 order_queue_t q;
 
 static unsigned char obs_cmd[4]         = {10, 4, 0 , 2};
-static unsigned char pos_cmd[4]         = {253, 0, 0, 60};
+static unsigned char pos_cmd[4]         = {253, 0, 0, 240};
 static unsigned char stop_btn_cmd[4]    = {10, 3, 0, 2};
 static unsigned char reset_cmd[4]       = {254, 0, 0, 0};
 
@@ -87,7 +87,7 @@ void test_init_state_transitions(void) {
     write_to_socket(pos_cmd);   //Resets the elevator to a little below second floor
     ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(INIT_STATE, ret, "As the elevator is not at a floor, the init state should not transition.");
-    sleep(5);   //Should take less than a few seconds to reach first floor.
+    sleep(10);   //Should take less than a few seconds to reach first floor.
     ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STANDBY_STATE, ret, "As the elevator should have reached the bottom floor, the fsm should transition");
 }
