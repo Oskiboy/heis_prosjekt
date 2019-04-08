@@ -134,6 +134,7 @@ state_t init_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
 
     if(fsm_p->_dir != DIRN_DOWN) {
         elev_set_motor_direction(DIRN_DOWN);
+        fsm_p->_dir = DIRN_DOWN;
     }
 
     if(elev_get_floor_sensor_signal() > 0) {
