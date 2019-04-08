@@ -7,8 +7,9 @@ FSM_MODULE(fsm_test_m);
 order_queue_t q;
 
 static unsigned char obs_cmd[4]         = {10, 4, 0 , 2};
-static unsigned char pos_cmd[4]         = {244, 0, 0, 80};
+static unsigned char pos_cmd[4]         = {253, 0, 0, 80};
 static unsigned char stop_btn_cmd[4]    = {10, 3, 0, 2};
+static unsigned char reset_cmd[4]       = {254, 0, 0, 0};
 
 int return_zero() {
     return 0;
@@ -37,7 +38,7 @@ void setUp(void) {
     q.clear_queue=empty_function;
     q.next_order=motor_dir;
     q.check_for_order=order;
-    write_to_socket(pos_cmd);
+    write_to_socket(reset_cmd);
 }
 
 void tearDown(void) {
@@ -49,21 +50,25 @@ void stop_test(void) {
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[INIT_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STOP_STATE, fsm_test_m.state, "Init state does not stop when stop button is pressed!");
+    sleep(1);
 
     write_to_socket(stop_btn_cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[UP_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STOP_STATE, fsm_test_m.state, "Up state does not stop when stop button is pressed!");
+    sleep(1);
 
     write_to_socket(stop_btn_cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[DOWN_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STOP_STATE, fsm_test_m.state, "Down state does not stop when stop button is pressed!");
+    sleep(1);
 
     write_to_socket(stop_btn_cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[STANDBY_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STOP_STATE, fsm_test_m.state, "Standby state does not stop when stop button is pressed!");
+    sleep(1);
 
     write_to_socket(stop_btn_cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[SERVE_ORDER_STATE];
@@ -76,11 +81,13 @@ void test_init_state_transitions(void) {
     write_to_socket(obs_cmd);   //Set the obstruction button
     int ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(INIT_STATE, ret, "Obstruction button is pressed, should stay in init state");
+    write_to_socket(reset_cmd);
+    sleep(1);
 
     write_to_socket(pos_cmd);   //Resets the elevator to a little below second floor
     ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(INIT_STATE, ret, "As the elevator is not at a floor, the init state should not transition.");
-    sleep(3);   //Should take less than a second to reach first floor.
+    sleep(5);   //Should take less than a few seconds to reach first floor.
     ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STANDBY_STATE, ret, "As the elevator should have reached the bottom floor, the fsm should transition");
 }
