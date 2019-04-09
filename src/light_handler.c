@@ -8,11 +8,14 @@ void update_lights(void) {
         elev_set_floor_indicator(floor); 
     }
     //Loop over all commands in all floors and check if a button is pressed.
-    for(int i = 0; i < 4; ++i) {
-        for(int j = 0; j < 3; ++j) {
-            btn = elev_get_button_signal(j, i);
+    for(int floor = 0; floor < 4; ++floor) {
+        for(int button = 0; button < 3; ++button) {
+            if ((floor == 0 && button == BUTTON_CALL_DOWN) || (floor == 3 && button == BUTTON_CALL_UP)){
+                continue;
+            }
+            btn = elev_get_button_signal(button, floor);
             if(btn) {
-                elev_set_button_lamp(j, i, 1);
+                elev_set_button_lamp(button, floor, 1);
             }
         }
     }
