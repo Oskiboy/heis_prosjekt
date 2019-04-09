@@ -204,19 +204,28 @@ int check_for_order(order_queue_t * self, elev_motor_direction_t dir){
     return 0;
 }
 
-elev_motor_direction_t next_order(order_queue_t * self){
+elev_motor_direction_t next_order(order_queue_t * self, int last_floor, elev_motor_direction_t last_dir){
     if (self->head == NULL) {
         return DIRN_STOP;
     }
-    if (self->head->request.floor > elev_get_floor_sensor_signal()){
+    if (self->head->request.floor > last_floor){
         return DIRN_UP;
     }
-    else if (self->head->request.floor < elev_get_floor_sensor_signal()){
+    else if (self->head->request.floor < last_floor){
         return DIRN_DOWN;
     }
-    else {
+    else if (last_floor == elev_get_floor_sensor_signal() ){
         return DIRN_STOP;
     }
+    else {
+        if (last_dir == DIRN_DOWN){
+            return DIRN_UP;
+        }
+        else if (last_dir == DIRN_UP){
+            return DIRN_DOWN;
+        }
+    }
+    return DIRN_STOP;
 }
 
 void complete_order(order_queue_t * self){
