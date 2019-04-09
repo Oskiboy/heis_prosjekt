@@ -182,7 +182,7 @@ int get_order(node_t ** head, elev_button_type_t dir, int floor){
     while (current != NULL) {
         if (current->request.floor == floor &&
             (current->request.direction == dir || dir == BUTTON_COMMAND || current->request.direction == BUTTON_COMMAND)) {
-            current = remove_node(head, &current);
+            //current = remove_node(head, &current);
             return 1;
         } else current = current->next;
     }
@@ -216,6 +216,7 @@ void update(order_queue_t * self){
             if(elev_get_button_signal(button, floor)){
                 temp.floor = floor;
                 temp.direction = button;
+                temp.stamp = time(NULL);
                 push(&self->head, temp);
             }
         }
