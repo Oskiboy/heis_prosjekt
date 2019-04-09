@@ -1,5 +1,6 @@
 #include "fsm.h"
 #include "elev.h"
+#include "light_handler.h"
 #include "stdio.h"
 
 int run_fsm(fsm_t* fsm_p, order_queue_t* queue_p) {
@@ -10,6 +11,7 @@ int run_fsm(fsm_t* fsm_p, order_queue_t* queue_p) {
         if(fsm_p->state != STOP_STATE) {
             queue_p->update(queue_p);
         }
+        update_lights();
         print_list(queue_p->head);
         fsm_p->state = fsm_p->current_state_function(fsm_p, queue_p);
         fsm_p->current_state_function = fsm_p->state_function_array[fsm_p->state];
