@@ -120,11 +120,12 @@ state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
 
     //If the elevator is at a floor, it should open the doors.
     if(elev_get_floor_sensor_signal() >= 0) {
+        fsm_p->_timestamp = time(NULL);
         elev_set_door_open_lamp(1);
     }
 
     //When the stop button is released, return to either standby or init.
-    if(!elev_get_stop_signal()) {
+    if(!elev_get_stop_signal() && time(NULL) - fsm_p->_timestamp >= 3) {
         elev_set_stop_lamp(0);
         if(fsm_p->_init)
             return STANDBY_STATE;
