@@ -47,15 +47,16 @@ void push(node_t ** head, request_t request) {
     }
     node_t * current = *head;
 
-    if (current->request.floor == request.floor || current->request.direction == request.direction){
-        return;
-    }
+
     
     while (current->next != NULL) {
         if (current->request.floor == request.floor || current->request.direction == request.direction){
             return;
         }
         current = current->next;
+    }
+    if (current->request.floor == request.floor || current->request.direction == request.direction){
+        return;
     }
 
     /* now we can add a new variable */
