@@ -2,7 +2,8 @@
 # Set up variables
 ###################
 
-SOURCES 		:= main.c logger.c light_handler.c
+SOURCES 		:= main.c logger.c light_handler.c queue_handler.c
+
 ELEV_DRIVER_SRC := elev.c io.c
 BUILD_DIR 		:= build
 SRC_DIR 		:= src
@@ -44,7 +45,7 @@ $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR)/* docs/
+	rm -rf $(BUILD_DIR)/*
 
 .PHONY: docs
 docs:

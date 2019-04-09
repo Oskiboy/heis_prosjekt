@@ -55,3 +55,9 @@ build/
 .vscode
 docs/
 *.log
+
+#Cmake
+CMakeLists.txt
+cmake-build-debug/
+
+.idea/
