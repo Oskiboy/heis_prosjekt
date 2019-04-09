@@ -7,6 +7,7 @@ FSM_MODULE(fsm_m);
 QUEUE_MODULE(queue_m);
 
 int main() {
+    printf("Initializing elevator hardware\n");
     elev_init();
     printf("Elevator starting...\n");
     run_fsm(&fsm_m, &queue_m);

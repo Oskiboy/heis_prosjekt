@@ -10,6 +10,7 @@ int run_fsm(fsm_t* fsm_p, order_queue_t* queue_p) {
         if(fsm_p->state != STOP_STATE) {
             queue_p->update(queue_p);
         }
+        print_queue(queue_p->head);
         fsm_p->state = fsm_p->current_state_function(fsm_p, queue_p);
         fsm_p->current_state_function = fsm_p->state_function_array[fsm_p->state];
     }
@@ -103,6 +104,7 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
 }
 
 state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
+    elev_set_stop_lamp(1);
     //If the motor is running, stop it.
     if(fsm_p->_dir != DIRN_STOP) {
         elev_set_motor_direction(DIRN_STOP);
@@ -121,6 +123,7 @@ state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
 
     //When the stop button is released, return to either standby or init.
     if(!elev_get_stop_signal()) {
+        elev_set_stop_lamp(0);
         if(fsm_p->_init)
             return STANDBY_STATE;
         else
