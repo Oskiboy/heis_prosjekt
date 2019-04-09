@@ -2,7 +2,8 @@
 # Set up variables
 ###################
 
-SOURCES 		:= main.c logger.c light_handler.c queue_handler.c
+
+SOURCES 		:= main.c logger.c fsm.c queue_handler.c light_handler.c
 
 ELEV_DRIVER_SRC := elev.c io.c
 BUILD_DIR 		:= build
@@ -51,7 +52,6 @@ clean:
 docs:
 	doxygen Doxyfile
 
-
 #############################
 # Unit tests.
 #############################
@@ -59,8 +59,9 @@ docs:
 export BUILD_DIR
 export CFLAGS
 export CC
-tests:
+tests: heis
 	make -C tests
 
-run_tests:
+run_tests: tests
 	make -C tests run_tests
+

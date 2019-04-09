@@ -8,9 +8,12 @@ pipeline {
     stages {
         stage('Initialization') {
             steps {
+                dir('elevator_simulator') {
+                    deleteDir()
+                }
                 sh """
-                mkdir logs
-                echo "Logs Initialized" >> logs/test.log
+                mkdir test_logs logs
+                echo "Logs Initialized" >> test_logs/test.log
                 git submodule init
                 git submodule update
                 """
@@ -26,12 +29,32 @@ pipeline {
                 sh 'echo "Build complete..."'
             }
         }
+        stage('Build simulator') {
+            steps {
+                sh '''
+                cd elevator_simulator
+                ./build.sh
+                ./build_wrapper.sh
+                '''
+            }
+        }
         stage('UnitTests') {
             steps {
+                sh 'mv elevator_simulator/libelev_wrapper.a tests/'
                 sh 'echo "Running Unit Tests:"'
                 sh 'make tests'
                 sh 'echo "Tests built successfully"'
-                sh 'make run_tests >> logs/test.log' 
+                sh '''
+                echo "Running server..."
+                ./elevator_simulator/build/sim_server > /dev/null 2>&1 &
+                export SERVER_PID=$!
+                echo $SERVER_PID
+                sleep 1
+                ps a >> test_logs/test.log
+                make run_tests >> test_logs/test.log
+                echo "Tests finished, killing server..."
+                kill $SERVER_PID
+                ''' 
             }
         }
     }
@@ -47,12 +70,12 @@ pipeline {
             '''
         }
         always {
-            archiveArtifacts artifacts: "logs/*.log, build/heis"
+            archiveArtifacts artifacts: "test_logs/*.log, build/heis, logs/*.log"
             sh '''
             ls
             echo "Starting clean"
             make clean
-            rm -rf build/ logs/
+            rm -rf build/ test_logs/ logs/ tests/build/
             '''
         }
     }

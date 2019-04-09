@@ -7,29 +7,38 @@ CFLAGS	+= -I../src -I ../Unity/src
 #	Defines
 #########################
 OUTPUT_DIR 	= build
-TESTS		= logger_test
-TEST_DEPS	= $(OUTPUT_DIR)/unity.o
+TESTS		= logger_tests fsm_tests
+TESTS		:= $(addprefix $(OUTPUT_DIR)/,$(TESTS))
+TEST_DEPS	= $(OUTPUT_DIR)/unity.o libelev_wrapper.a
 
 #########################
 #	Rules
 #########################
 .DEFAULT_RULE: all
-.PHONY: all run_tests logger_test clean
+	
+.PHONY: all run_tests logger_tests clean
 
 all: $(OUTPUT_DIR)/unity.o $(TESTS)
 	@echo "Building tests"
 
 run_tests: all
-	echo "LOGGER TESTS:"
-	./logger_test
+	@echo "Running tests"
+	./build/logger_tests
+	./build/fsm_tests
 
-logger_test: ../build/logger.o test_logger.c $(TEST_DEPS)
+$(OUTPUT_DIR)/logger_tests: ../build/logger.o test_logger.c $(TEST_DEPS)
 	$(CC) -o $@ $^ $(CFLAGS)
 
-queue_test: ../build/queue_handler.o test_queue.c $(TEST_DEPS)
+$(OUTPUT_DIR)/fsm_tests: fsm_tests.c ../$(BUILD_DIR)/fsm.o $(TEST_DEPS)
+	$(CC) -o $@ $^  $(CFLAGS) $(LDFLAGS)
+
+$(OUTPUT_DIR)/queue_test: ../build/queue_handler.o test_queue.c $(TEST_DEPS)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 $(OUTPUT_DIR)/unity.o:../Unity/src/unity.c | $(OUTPUT_DIR)
+	$(CC) -o $@ -c $< $(CFLAGS)
+
+$(OUTPUT_DIR)/elev.o: elev.c elev.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 $(OUTPUT_DIR):
