@@ -5,14 +5,6 @@
 #include "queue_handler.h"
 #include <stdio.h>
 
-node_t* init_list(request_t request){
-    node_t * head = NULL;
-    head = malloc(sizeof(node_t));
-    head->request = request;
-    head->next = NULL;
-    return head;
-}
-
 
 void print_list(node_t * head) {
     if (head == NULL) {
@@ -140,33 +132,6 @@ node_t * remove_node(node_t ** head, node_t ** node){
     return out_p;
 }
 
-void remove_by_index(node_t **head, int n) {
-    if (*head == NULL) {
-        return;
-    }
-
-    int i = 0;
-    node_t * current = *head;
-    node_t * temp_node = NULL;
-
-    if (n == 0) {
-        return pop(head);
-    }
-
-    for (i = 0; i < n-1; i++) {
-        if (current->next == NULL) {
-            return;
-        }
-        current = current->next;
-    }
-
-    temp_node = current->next;
-    current->next = temp_node->next;
-    free(temp_node);
-
-
-}
-
 void delete_list(node_t ** head){
     while(*head != NULL) pop(head);
 }
@@ -216,7 +181,7 @@ void update(order_queue_t * self){
             if(elev_get_button_signal(button, floor)){
                 temp.floor = floor;
                 temp.direction = button;
-                temp.stamp = time(NULL);
+                temp.stamp = (int) time(NULL) - self->start_time;
                 push(&self->head, temp);
             }
         }
