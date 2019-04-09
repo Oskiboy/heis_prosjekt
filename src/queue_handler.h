@@ -6,6 +6,7 @@
 #define HEIS_PROSJEKT_LINKEDLIST_H
 
 #include <stdlib.h>
+#include <time.h>
 #include "elev.h"
 
 #define QUEUE_MODULE(_name)    \
