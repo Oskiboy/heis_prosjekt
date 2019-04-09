@@ -40,7 +40,7 @@ state_t up_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     } else if(fsm_p->_dir != DIRN_UP) {
         elev_set_motor_direction(DIRN_UP);
         fsm_p->_dir = DIRN_UP;
-        fsm_p->_last_dir = DIRN_UP;
+        
     }
 
     //If we have an order on the current floor with the correct direction, stop.
@@ -69,7 +69,6 @@ state_t down_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     } else if(fsm_p->_dir != DIRN_DOWN) {
         elev_set_motor_direction(DIRN_DOWN);
         fsm_p->_dir = DIRN_DOWN;
-        fsm_p->_last_dir = DIRN_DOWN;
     }
 
     //If we have an order on the current floor with the correct direction, stop.
@@ -89,9 +88,13 @@ state_t standby_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     switch (queue_p->next_order(queue_p, fsm_p->_last_floor, fsm_p->_last_dir))
     {
         case DIRN_UP:
+            if(elev_get_floor_sensor_signal() >= 0)
+                fsm_p->_last_dir = DIRN_UP;
             return UP_STATE;
             break;
         case DIRN_DOWN:
+            if(elev_get_floor_sensor_signal() >= 0)
+                fsm_p->_last_dir = DIRN_DOWN;
             return DOWN_STATE;
             break;
         case DIRN_STOP:
@@ -103,7 +106,7 @@ state_t standby_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         default:
             break;
     }
-
+    
     return STANDBY_STATE;
 }
 
@@ -137,40 +140,47 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
 }
 
 state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
-    elev_set_stop_lamp(1);
-    clear_all_order_lights();
+    if(elev_get_stop_signal()) {
+        elev_set_stop_lamp(1);
+        queue_p->clear_queue(queue_p);
+        clear_all_order_lights();
+    }
     //If the motor is running, save the direciton and stop it.
     if(fsm_p->_dir != DIRN_STOP) {
-        fsm_p->_last_dir = fsm_p->_dir;
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
     }
+    
     printf("ELEVATOR STOPPED!\r");
-    //Clear the queue if it is not empty
-    if(queue_p->check_for_order(queue_p, fsm_p->_dir) >= 0) {
-        queue_p->clear_queue(queue_p);
-    }
 
-    //If the elevator is at a floor, it should open the doors.
-    if(elev_get_floor_sensor_signal() >= 0) {
+    int floor = elev_get_floor_sensor_signal();
+    if(floor >= 0) {
+        //If the elevator is at a floor, it should open the doors.
         elev_set_door_open_lamp(1);
-    }
-
-    //When the stop button is released, return to either standby or init.
-    if(!elev_get_stop_signal()) {
-        if(time(NULL) - fsm_p->_timestamp >= 3) {
+        
+        //When the stop button is no longer pressed, it should start the three second timer and 
+        //let the SERVE_ORDER_STATE handle the doors.
+        if(!elev_get_stop_signal()) {
             elev_set_stop_lamp(0);
-            elev_set_door_open_lamp(0);
+
+            printf("ELEVATOR STARTED!\n");
+            fsm_p->_timestamp = time(NULL);
+            return SERVE_ORDER_STATE;
+
+        } else {
+            return STOP_STATE;
+        }
+    } else {
+        //If the elevator is in between two floors it should return to either INIT_STATE or STANDBY_STATE
+        if(!elev_get_stop_signal()) {
+            elev_set_stop_lamp(0);
             printf("ELEVATOR STARTED!\n");
             if(fsm_p->_init)
                 return STANDBY_STATE;
             else
                 return INIT_STATE; 
         }
-    } else {
-        fsm_p->_timestamp = time(NULL);
     }
-
     return STOP_STATE;
 }
 
