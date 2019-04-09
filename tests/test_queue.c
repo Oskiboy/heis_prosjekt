@@ -84,6 +84,5 @@ void test_some_thing_to_test(void) {
 
 int main() {
     UNITY_BEGIN();
-    RUN_TEST(test_some_thing_to_test);
     return UNITY_END();
 }
