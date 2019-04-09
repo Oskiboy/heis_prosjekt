@@ -55,6 +55,7 @@ build/
 .vscode
 docs/
 *.log
+tests/libelev_wrapper.a
 
 #Cmake
 CMakeLists.txt
