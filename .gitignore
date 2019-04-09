@@ -53,3 +53,12 @@ dkms.conf
 
 build/
 .vscode
+docs/
+*.log
+tests/libelev_wrapper.a
+
+#Cmake
+CMakeLists.txt
+cmake-build-debug/
+
+.idea/
