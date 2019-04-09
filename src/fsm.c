@@ -73,7 +73,7 @@ state_t standby_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     }
 
     //Check if we have an active order and transition to the appropriate state.
-    switch (queue_p->next_order(queue_p))
+    switch (queue_p->next_order(queue_p, fsm_p->_last_floor, fsm_p->_last_dir))
     {
         case DIRN_UP:
             return UP_STATE;
@@ -125,8 +125,10 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
 
 state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     elev_set_stop_lamp(1);
-    //If the motor is running, stop it.
+
+    //If the motor is running, save the direciton and stop it.
     if(fsm_p->_dir != DIRN_STOP) {
+        fsm_p->_last_dir = fsm_p->_dir;
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
     }
@@ -178,6 +180,9 @@ state_t init_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         fsm_p->_init = 1;
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
+        
+        fsm_p->_last_floor = floor;
+        fsm_p->_last_dir = DIRN_STOP;
         return STANDBY_STATE;
     }
     return INIT_STATE;

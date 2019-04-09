@@ -32,7 +32,10 @@ standby_state_function,     \
 serve_order_state_function, \
 stop_state_function,        \
 init_state_function         \
-}};
+},                          \
+-1,                         \
+DIRN_STOP                   \
+};
 
 enum state_enumeration;
 struct fsm_module_struct;
@@ -72,12 +75,14 @@ enum state_enumeration {
  * 
  */
 struct fsm_module_struct{
-    state_t state;
-    int _init;
-    elev_motor_direction_t  _dir;
-    state_function_t current_state_function;
-    const state_function_t state_function_array[STATES_N];
-    time_t _timestamp;
+    state_t                     state;
+    int                         _init;
+    elev_motor_direction_t      _dir;
+    state_function_t            current_state_function;
+    const state_function_t      state_function_array[STATES_N];
+    time_t                      _timestamp;
+    int                         _last_floor;
+    elev_motor_direction_t      _last_dir;
 };
 
 /**
