@@ -8,11 +8,11 @@
 #include <stdlib.h>
 #include "elev.h"
 
-#define QUEUE_MODULE (_name)    \
+#define QUEUE_MODULE(_name)    \
 static order_queue_t _name = {  \
-NULL, -1, DIRN_STOP, update,    \
-delete_list, check_for_order,   \
-get_ direction, complete_order  \
+NULL, update,    \
+clear_queue, check_for_order,   \
+next_order, complete_order  \
 }
 
 
@@ -61,6 +61,14 @@ void delete_list(node_t ** head);
 int get_order(node_t ** head, elev_button_type_t dir, int floor);
 
 void clear_order(node_t ** head, int floor);
+
+int check_for_order(order_queue_t * self, elev_motor_direction_t dir);
+
+elev_motor_direction_t next_order(order_queue_t * self);
+
+void clear_queue(order_queue_t * self);
+
+void complete_order(order_queue_t * self);
 
 void update(order_queue_t * self);
 
