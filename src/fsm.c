@@ -10,7 +10,7 @@ int run_fsm(fsm_t* fsm_p, order_queue_t* queue_p) {
         if(fsm_p->state != STOP_STATE) {
             queue_p->update(queue_p);
         }
-        print_queue(queue_p->head);
+        print_list(queue_p->head);
         fsm_p->state = fsm_p->current_state_function(fsm_p, queue_p);
         fsm_p->current_state_function = fsm_p->state_function_array[fsm_p->state];
     }
