@@ -130,7 +130,7 @@ void clear_order(node_t ** head, int floor);
  */
 int check_for_order(order_queue_t * self, elev_motor_direction_t dir);
 
-elev_motor_direction_t next_order(order_queue_t * self);
+elev_motor_direction_t next_order(order_queue_t * self, int last_floor, elev_motor_direction_t last_dir);
 
 void clear_queue(order_queue_t * self);
 
