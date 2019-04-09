@@ -2,6 +2,7 @@
 #include "elev.h"
 #include "unity.h"
 #include <unistd.h>
+#include <time.h>
 
 FSM_MODULE(fsm_test_m);
 order_queue_t q;
@@ -93,12 +94,13 @@ void test_init_obstruction_handling(void) {
 }
 
 void test_init_state_transitions(void) {
-    
     write_to_socket(pos_cmd);   //Resets the elevator to a little below second floor
     int ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(INIT_STATE, ret, "As the elevator is not at a floor, the init state should not transition.");
-    sleep(4);   //Should take less than a few seconds to reach first floor.
-    ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
+    time_t stamp = time(NULL);
+    while(time(NULL) - stamp <= 3) {
+        ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
+    }
     TEST_ASSERT_EQUAL_MESSAGE(STANDBY_STATE, ret, "As the elevator should have reached the bottom floor, the fsm should transition");
 }
 

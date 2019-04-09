@@ -145,7 +145,6 @@ state_t init_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     }
     int floor = elev_get_floor_sensor_signal();
     if(floor >= 0) {
-        printf("%d\n", floor);
         fsm_p->_init = 1;
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
