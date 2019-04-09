@@ -89,7 +89,7 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     }
 
     if(queue_p->check_for_order(queue_p, fsm_p->_dir)) {
-        queue_p->complete_order();
+        queue_p->complete_order(queue_p);
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_timestamp = time(NULL);
         elev_set_door_open_lamp(1);
