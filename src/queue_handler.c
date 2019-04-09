@@ -46,13 +46,17 @@ void push(node_t ** head, request_t request) {
         return;
     }
     node_t * current = *head;
+
+    if (current->request.floor == request.floor || current->request.direction == request.direction){
+        return;
+    }
     
-    do {
+    while (current->next != NULL) {
         if (current->request.floor == request.floor || current->request.direction == request.direction){
             return;
         }
         current = current->next;
-    } while (current->next != NULL) ;
+    }
 
     /* now we can add a new variable */
     current->next = malloc(sizeof(node_t));
@@ -187,7 +191,6 @@ int get_order(node_t ** head, elev_button_type_t dir, int floor){
 void clear_order(node_t ** head,  int floor){
     if (*head == NULL) return;
     node_t * current = *head;
-    current = *head;
     while (current->next != NULL) {
         if (current->request.floor == floor) {
             current = remove_node(head, &current);
