@@ -5,10 +5,14 @@
 
 int run_fsm(fsm_t* fsm_p, order_queue_t* queue_p) {
     //If the FSM has no queue, return an error.
-    if(!queue_p)
-        error("FSM received invalid queue!");
-    if(!fsm_p)
-        error("FSM received ivalid pointer to self!");
+    if(!queue_p) {
+        printf("FSM received invalid queue!");
+        exit(-1);
+    }
+    if(!fsm_p) {
+        printf("FSM received ivalid pointer to self!");
+        exit(-1);
+    }
     while(1) {
         if(fsm_p->state != STOP_STATE && fsm_p->state != INIT_STATE) {
             queue_p->update(queue_p);
