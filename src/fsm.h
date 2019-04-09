@@ -9,12 +9,16 @@
 /**
  * @file 
  * @brief The FSM interface.
- * 
  * To create an FSM module to use add the FSM_MODULE macro with your defines and includes.
  * Now pass the module to the run_fsm(fsm_t* fsm_p) function
  */ 
 
-
+/**
+ * @def FSM_MODULE(_name)
+ * This macro is used to create and instantiate a new fsm_module_struct.
+ * This should always have a unique name and the run fsm function should be passed a pointer to this module.
+ * @param _name This is the name given to the new module. 
+ */
 #define FSM_MODULE(_name)   \
 static fsm_t _name =        \
 {INIT_STATE,                \
