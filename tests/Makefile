@@ -26,6 +26,9 @@ run_tests: all
 logger_test: ../build/logger.o test_logger.c $(TEST_DEPS)
 	$(CC) -o $@ $^ $(CFLAGS)
 
+queue_test: ../build/queue_handler.o test_queue.c $(TEST_DEPS)
+	$(CC) -o $@ $^ $(CFLAGS)
+
 $(OUTPUT_DIR)/unity.o:../Unity/src/unity.c | $(OUTPUT_DIR)
 	$(CC) -o $@ -c $< $(CFLAGS)
 
