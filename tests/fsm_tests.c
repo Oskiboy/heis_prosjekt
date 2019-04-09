@@ -23,7 +23,7 @@ int return_one() {
 void empty_function() {
     return;
 }
-elev_motor_direction_t motor_dir(order_queue_t* dummy) {
+elev_motor_direction_t motor_dir(order_queue_t* dummy, int last_floor, elev_motor_direction_t last_dir) {
     return 1;
 }
 int order(order_queue_t* dummy, elev_motor_direction_t dir) {
