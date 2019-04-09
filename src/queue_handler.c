@@ -202,6 +202,9 @@ void update(order_queue_t * self){
     request_t temp;
     for(int floor = 0; floor<=3; ++floor){
         for(int button = 0; floor<=3; ++floor){
+            if ((floor == 0 && button == BUTTON_CALL_DOWN) || (floor == 3 && button == BUTTON_CALL_UP)){
+                continue;
+            }
             if(elev_get_button_signal(button, floor)){
                 temp.floor = floor;
                 temp.direction = button;
