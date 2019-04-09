@@ -28,13 +28,19 @@ state_t up_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         return STOP_STATE;
     }
 
+    int floor = elev_get_floor_sensor_signal();
+    if(floor >= 0) {
+        fsm_p->_last_floor = floor;
+    }
     //Start the motor.
-    if(elev_get_floor_sensor_signal() == 3) {
+    if(floor == 3) {
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
+        fsm_p->_last_dir = DIRN_STOP;
     } else if(fsm_p->_dir != DIRN_UP) {
         elev_set_motor_direction(DIRN_UP);
         fsm_p->_dir = DIRN_UP;
+        fsm_p->_last_dir = DIRN_UP;
     }
 
     //If we have an order on the current floor with the correct direction, stop.
@@ -50,13 +56,20 @@ state_t down_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         return STOP_STATE;
     }
 
+    int floor = elev_get_floor_sensor_signal();
+    if(floor >= 0) {
+        fsm_p->_last_floor = floor;
+    }
+
     //Start the motor.
-    if(elev_get_floor_sensor_signal() == 0) {
+    if(floor == 0) {
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
+        fsm_p->_last_dir = DIRN_STOP;
     } else if(fsm_p->_dir != DIRN_DOWN) {
         elev_set_motor_direction(DIRN_DOWN);
         fsm_p->_dir = DIRN_DOWN;
+        fsm_p->_last_dir = DIRN_DOWN;
     }
 
     //If we have an order on the current floor with the correct direction, stop.
@@ -107,7 +120,7 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
         
-        clear_order_lights();
+        clear_order_light();
 
         queue_p->complete_order(queue_p);
         fsm_p->_timestamp = time(NULL);
@@ -125,7 +138,7 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
 
 state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     elev_set_stop_lamp(1);
-
+    clear_all_order_lights();
     //If the motor is running, save the direciton and stop it.
     if(fsm_p->_dir != DIRN_STOP) {
         fsm_p->_last_dir = fsm_p->_dir;
@@ -134,7 +147,7 @@ state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     }
     printf("ELEVATOR STOPPED!\r");
     //Clear the queue if it is not empty
-    if(queue_p->check_for_order(queue_p, fsm_p->_dir) < 0) {
+    if(queue_p->check_for_order(queue_p, fsm_p->_dir) >= 0) {
         queue_p->clear_queue(queue_p);
     }
 

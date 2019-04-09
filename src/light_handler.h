@@ -12,6 +12,8 @@
  */
 void update_lights(void);
 
-void clear_order_lights(void);
+void clear_order_light(void);
+
+void clear_all_order_lights(void);
 
 #endif //LIGHT_HANDLER_H
