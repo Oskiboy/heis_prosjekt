@@ -212,7 +212,7 @@ void update(order_queue_t * self){
 }
 
 void clear_queue(order_queue_t * self){
-    delete_list(self->head);
+    delete_list(&self->head);
 }
 
 int check_for_order(order_queue_t * self, elev_button_type_t dir){
