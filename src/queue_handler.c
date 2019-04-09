@@ -50,12 +50,12 @@ void push(node_t ** head, request_t request) {
 
     
     while (current->next != NULL) {
-        if (current->request.floor == request.floor || current->request.direction == request.direction){
+        if (current->request.floor == request.floor && current->request.direction == request.direction){
             return;
         }
         current = current->next;
     }
-    if (current->request.floor == request.floor || current->request.direction == request.direction){
+    if (current->request.floor == request.floor && current->request.direction == request.direction){
         return;
     }
 
