@@ -225,6 +225,7 @@ int check_for_order(order_queue_t * self, elev_motor_direction_t dir){
     else if (dir == DIRN_STOP){
         return get_order(&self->head, BUTTON_COMMAND, elev_get_floor_sensor_signal());
     }
+    return 0;
 }
 
 elev_motor_direction_t next_order(order_queue_t * self){
