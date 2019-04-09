@@ -21,7 +21,10 @@ state_t up_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     }
 
     //Start the motor.
-    if(fsm_p->_dir != DIRN_UP) {
+    if(elev_get_floor_sensor_signal() == 3) {
+        elev_set_motor_direction(DIRN_STOP);
+        fsm_p->_dir = DIRN_STOP;
+    } else if(fsm_p->_dir != DIRN_UP) {
         elev_set_motor_direction(DIRN_UP);
         fsm_p->_dir = DIRN_UP;
     }
@@ -40,7 +43,10 @@ state_t down_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     }
 
     //Start the motor.
-    if(fsm_p->_dir != DIRN_DOWN) {
+    if(elev_get_floor_sensor_signal() == 0) {
+        elev_set_motor_direction(DIRN_STOP);
+        fsm_p->_dir = DIRN_STOP;
+    } else if(fsm_p->_dir != DIRN_DOWN) {
         elev_set_motor_direction(DIRN_DOWN);
         fsm_p->_dir = DIRN_DOWN;
     }

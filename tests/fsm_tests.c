@@ -7,7 +7,7 @@ FSM_MODULE(fsm_test_m);
 order_queue_t q;
 
 static unsigned char obs_cmd[4]         = {10, 4, 0 , 2};
-static unsigned char pos_cmd[4]         = {253, 0, 0, 240};
+static unsigned char pos_cmd[4]         = {253, 0, 0, 70};
 static unsigned char stop_btn_cmd[4]    = {10, 3, 0, 2};
 static unsigned char reset_cmd[4]       = {254, 0, 0, 0};
 
@@ -46,49 +46,58 @@ void tearDown(void) {
 
 }
 
-void stop_test(void) {
+void test_init_state_stop_button(void) {
     write_to_socket(stop_btn_cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[INIT_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STOP_STATE, fsm_test_m.state, "Init state does not stop when stop button is pressed!");
     sleep(1);
+}
 
+void test_up_state_stop_button(void) {
     write_to_socket(stop_btn_cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[UP_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STOP_STATE, fsm_test_m.state, "Up state does not stop when stop button is pressed!");
     sleep(1);
+}
 
+void test_down_state_stop_button(void) {
     write_to_socket(stop_btn_cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[DOWN_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STOP_STATE, fsm_test_m.state, "Down state does not stop when stop button is pressed!");
     sleep(1);
+}
 
+void test_standby_state_stop_button(void) {
     write_to_socket(stop_btn_cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[STANDBY_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STOP_STATE, fsm_test_m.state, "Standby state does not stop when stop button is pressed!");
     sleep(1);
 
+}
+void test_serve_state_stop_button(void) {
     write_to_socket(stop_btn_cmd);
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[SERVE_ORDER_STATE];
     fsm_test_m.state = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STOP_STATE, fsm_test_m.state, "Serve order state does not stop when stop button is pressed!");
 }
 
-void test_init_state_transitions(void) {
+void test_init_obstruction_handling(void) {
     fsm_test_m.current_state_function = fsm_test_m.state_function_array[INIT_STATE];
     write_to_socket(obs_cmd);   //Set the obstruction button
     int ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(INIT_STATE, ret, "Obstruction button is pressed, should stay in init state");
-    write_to_socket(reset_cmd);
-    sleep(1);
+}
 
+void test_init_state_transitions(void) {
+    
     write_to_socket(pos_cmd);   //Resets the elevator to a little below second floor
-    ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
+    int ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(INIT_STATE, ret, "As the elevator is not at a floor, the init state should not transition.");
-    sleep(10);   //Should take less than a few seconds to reach first floor.
+    sleep(4);   //Should take less than a few seconds to reach first floor.
     ret = fsm_test_m.current_state_function(&fsm_test_m, &q);
     TEST_ASSERT_EQUAL_MESSAGE(STANDBY_STATE, ret, "As the elevator should have reached the bottom floor, the fsm should transition");
 }
@@ -126,8 +135,13 @@ void state_array_index_test(void) {
 int main(int argc, char** argv) {
     UNITY_BEGIN();
     RUN_TEST(state_array_index_test);
+    RUN_TEST(test_init_obstruction_handling);
     RUN_TEST(test_init_state_transitions);
     RUN_TEST(test_door_should_open_for_3_seconds_when_serving_order);
-    RUN_TEST(stop_test);
+    RUN_TEST(test_init_state_stop_button);
+    RUN_TEST(test_up_state_stop_button);
+    RUN_TEST(test_down_state_stop_button);
+    RUN_TEST(test_standby_state_stop_button);
+    RUN_TEST(test_serve_state_stop_button);
     return UNITY_END();
 }
