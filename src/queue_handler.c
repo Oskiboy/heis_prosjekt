@@ -215,8 +215,16 @@ void clear_queue(order_queue_t * self){
     delete_list(&self->head);
 }
 
-int check_for_order(order_queue_t * self, elev_button_type_t dir){
-    return get_order(&self->head, dir, elev_get_floor_sensor_signal());
+int check_for_order(order_queue_t * self, elev_motor_direction_t dir){
+    if (dir == DIRN_DOWN){
+        return get_order(&self->head, BUTTON_CALL_DOWN, elev_get_floor_sensor_signal());
+    }
+    else if (dir == DIRN_UP){
+        return get_order(&self->head, BUTTON_CALL_UP, elev_get_floor_sensor_signal());
+    }
+    else if (dir == DIRN_STOP){
+        return get_order(&self->head, BUTTON_COMMAND, elev_get_floor_sensor_signal());
+    }
 }
 
 elev_motor_direction_t next_order(order_queue_t * self){
