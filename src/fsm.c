@@ -96,7 +96,7 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     if(elev_get_obstruction_signal()) {
         fsm_p->_timestamp = time(NULL);
     }
-    
+
     if(queue_p->check_for_order(queue_p, fsm_p->_dir) > 0) {
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
@@ -121,6 +121,7 @@ state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     elev_set_stop_lamp(1);
     //If the motor is running, stop it.
     if(fsm_p->_dir != DIRN_STOP) {
+        printf("ELEVATOR STOPPED!\n");
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
     }
@@ -141,6 +142,7 @@ state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         if(time(NULL) - fsm_p->_timestamp >= 3) {
             elev_set_stop_lamp(0);
             elev_set_door_open_lamp(0);
+            printf("ELEVATOR STARTED!\n");
             if(fsm_p->_init)
                 return STANDBY_STATE;
             else
