@@ -15,7 +15,20 @@ clear_queue, check_for_order,   \
 next_order, complete_order  \
 }
 
+//Now pass the module to the run_fsm(fsm_t* fsm_p) function
 
+/**
+ * @file
+ * @brief The Queue interface.
+ * To create a Queue module to use add the QUEUE_MODULE macro with your defines and includes.
+ */
+
+/**
+ * @def QUEUE_MODULE(_name)
+ * This macro is used to create and instantiate a new order_queue_struct.
+ * This should always have a unique name and the run queue function should be passed a pointer to this module.
+ * @param _name This is the name given to the new module.
+ */
 typedef struct request {
     int floor;
     elev_button_type_t direction;
@@ -61,6 +74,8 @@ void delete_list(node_t ** head);
 int get_order(node_t ** head, elev_button_type_t dir, int floor);
 
 void clear_order(node_t ** head, int floor);
+
+
 
 int check_for_order(order_queue_t * self, elev_motor_direction_t dir);
 
