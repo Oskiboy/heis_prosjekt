@@ -232,6 +232,9 @@ int check_for_order(order_queue_t * self, elev_motor_direction_t dir){
 }
 
 elev_motor_direction_t next_order(order_queue_t * self){
+    if (self->head == NULL) {
+        return DIRN_STOP;
+    }
     if (self->head->request.floor > elev_get_floor_sensor_signal()){
         return DIRN_UP;
     }
