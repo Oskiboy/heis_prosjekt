@@ -6,12 +6,14 @@
 int run_fsm(fsm_t* fsm_p, order_queue_t* queue_p) {
     //If the FSM has no queue, return an error.
     if(!queue_p)
-        return -1;
+        error("FSM received invalid queue!");
+    if(!fsm_p)
+        error("FSM received ivalid pointer to self!");
     while(1) {
         if(fsm_p->state != STOP_STATE && fsm_p->state != INIT_STATE) {
             queue_p->update(queue_p);
+            update_lights();
         }
-        update_lights();
         fsm_p->state = fsm_p->current_state_function(fsm_p, queue_p);
         fsm_p->current_state_function = fsm_p->state_function_array[fsm_p->state];
     }
@@ -121,11 +123,10 @@ state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     elev_set_stop_lamp(1);
     //If the motor is running, stop it.
     if(fsm_p->_dir != DIRN_STOP) {
-        printf("ELEVATOR STOPPED!\n");
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
     }
-    
+    printf("ELEVATOR STOPPED!\r");
     //Clear the queue if it is not empty
     if(queue_p->check_for_order(queue_p, fsm_p->_dir) < 0) {
         queue_p->clear_queue(queue_p);
