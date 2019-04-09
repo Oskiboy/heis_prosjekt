@@ -58,7 +58,6 @@ typedef struct order_queue_struct order_queue_t;
 
 struct order_queue_struct{
     node_t * head;
-    long int start_time = time(NULL);
     void (*update) (order_queue_t * self);
     void (*clear_queue) (order_queue_t * self);
     int  (*check_for_order) (order_queue_t * self, elev_motor_direction_t dir);

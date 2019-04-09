@@ -93,6 +93,10 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         return STOP_STATE;
     }
 
+    if(elev_get_obstruction_signal()) {
+        fsm_p->_timestamp = time(NULL);
+    }
+    
     if(queue_p->check_for_order(queue_p, fsm_p->_dir) > 0) {
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
@@ -102,7 +106,7 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         queue_p->complete_order(queue_p);
         fsm_p->_timestamp = time(NULL);
         elev_set_door_open_lamp(1);
-    } else if(time(NULL) - fsm_p->_timestamp >= 3 && !elev_get_obstruction_signal()) {
+    } else if(time(NULL) - fsm_p->_timestamp >= 3) {
         elev_set_door_open_lamp(0);
         elev_set_motor_direction(DIRN_STOP);
         fsm_p->_dir = DIRN_STOP;
