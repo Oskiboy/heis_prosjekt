@@ -8,11 +8,10 @@ int run_fsm(fsm_t* fsm_p, order_queue_t* queue_p) {
     if(!queue_p)
         return -1;
     while(1) {
-        if(fsm_p->state != STOP_STATE) {
+        if(fsm_p->state != STOP_STATE && fsm_p->state != INIT_STATE) {
             queue_p->update(queue_p);
         }
         update_lights();
-        print_list(queue_p->head);
         fsm_p->state = fsm_p->current_state_function(fsm_p, queue_p);
         fsm_p->current_state_function = fsm_p->state_function_array[fsm_p->state];
     }
@@ -77,7 +76,10 @@ state_t standby_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
             return DOWN_STATE;
             break;
         case DIRN_STOP:
-            return STANDBY_STATE;
+            if(queue_p->check_for_order(queue_p, fsm_p->_dir) >= 0)
+                return SERVE_ORDER_STATE;
+            else 
+                return STANDBY_STATE;
             break;
         default:
             break;
@@ -91,13 +93,19 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
         return STOP_STATE;
     }
 
-    if(queue_p->check_for_order(queue_p, fsm_p->_dir)) {
-        queue_p->complete_order(queue_p);
+    if(queue_p->check_for_order(queue_p, fsm_p->_dir) > 0) {
         elev_set_motor_direction(DIRN_STOP);
+        fsm_p->_dir = DIRN_STOP;
+        
+        clear_order_lights();
+
+        queue_p->complete_order(queue_p);
         fsm_p->_timestamp = time(NULL);
         elev_set_door_open_lamp(1);
-    } else if(time(NULL) - fsm_p->_timestamp >= 3) {
+    } else if(time(NULL) - fsm_p->_timestamp >= 3 && !elev_get_obstruction_signal()) {
         elev_set_door_open_lamp(0);
+        elev_set_motor_direction(DIRN_STOP);
+        fsm_p->_dir = DIRN_STOP;
         //Order completed!
         return STANDBY_STATE;
     }
@@ -125,12 +133,17 @@ state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     }
 
     //When the stop button is released, return to either standby or init.
-    if(!elev_get_stop_signal() && time(NULL) - fsm_p->_timestamp >= 3) {
-        elev_set_stop_lamp(0);
-        if(fsm_p->_init)
-            return STANDBY_STATE;
-        else
-            return INIT_STATE; 
+    if(!elev_get_stop_signal()) {
+        if(time(NULL) - fsm_p->_timestamp >= 3) {
+            elev_set_stop_lamp(0);
+            elev_set_door_open_lamp(0);
+            if(fsm_p->_init)
+                return STANDBY_STATE;
+            else
+                return INIT_STATE; 
+        }
+    } else {
+        fsm_p->_timestamp = time(NULL);
     }
 
     return STOP_STATE;
