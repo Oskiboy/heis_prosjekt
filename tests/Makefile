@@ -29,7 +29,7 @@ run_tests: all
 $(OUTPUT_DIR)/logger_tests: ../build/logger.o test_logger.c $(TEST_DEPS)
 	$(CC) -o $@ $^ $(CFLAGS)
 
-$(OUTPUT_DIR)/fsm_tests: fsm_tests.c ../$(BUILD_DIR)/fsm.o $(TEST_DEPS)
+$(OUTPUT_DIR)/fsm_tests: fsm_tests.c ../$(BUILD_DIR)/fsm.o ../$(BUILD_DIR)/light_handler.o $(TEST_DEPS)
 	$(CC) -o $@ $^  $(CFLAGS) $(LDFLAGS)
 
 $(OUTPUT_DIR)/queue_test: ../build/queue_handler.o test_queue.c $(TEST_DEPS)
