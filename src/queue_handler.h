@@ -18,7 +18,7 @@ get_ direction, complete_order  \
 
 typedef struct request {
     int floor;
-    elev_motor_direction_t direction;
+    elev_button_type_t direction;
     int stamp;
 } request_t;
 
@@ -33,12 +33,10 @@ typedef struct order_queue_struct order_queue_t;
 
 struct order_queue_struct{
     node_t * head;
-    int floor;
-    elev_motor_direction_t dir;
 
     void (*update) (order_queue_t * self);
     void (*clear_queue) (order_queue_t * self);
-    int  (*check_for_order) (order_queue_t * self);
+    int  (*check_for_order) (order_queue_t * self, elev_button_type_t dir);
     elev_motor_direction_t (*next_order) (order_queue_t * self);
     void (*complete_order) (order_queue_t * self);
 };
@@ -60,11 +58,12 @@ void remove_by_index(node_t ** head, int n);
 
 void delete_list(node_t ** head);
 
-int check_for_order(node_t ** head, elev_motor_direction_t dir, int floor);
+int get_order(node_t ** head, elev_button_type_t dir, int floor);
 
-void complete_order(node_t ** head, int floor);
+void clear_order(node_t ** head, int floor);
 
-void update(node_t ** head);
+void update(order_queue_t * self);
+
 
 
 #endif //HEIS_PROSJEKT_LINKEDLIST_H

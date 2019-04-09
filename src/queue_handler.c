@@ -24,11 +24,11 @@ void print_list(node_t * head) {
     while (current != NULL) {
         printf("Request:%-3d     Floor:%-2d  Type: ",i,current->request.floor);
         switch (current->request.direction) {
-            case DIRN_UP: printf("Up  ");
+            case BUTTON_CALL_UP: printf("Up  ");
                 break;
-            case DIRN_DOWN: printf("Down");
+            case BUTTON_CALL_DOWN: printf("Down");
                 break;
-            case DIRN_STOP: printf("Stop");
+            case BUTTON_COMMAND: printf("Stop");
                 break;
         }
         printf("   Stamp: %d\n", current->request.stamp);
@@ -162,7 +162,7 @@ void delete_list(node_t ** head){
     while(*head != NULL) pop(head);
 }
 
-int check_for_order(node_t ** head, elev_motor_direction_t dir, int floor){
+int get_order(node_t ** head, elev_button_type_t dir, int floor){
     node_t * current = *head;
     if (*head == NULL) {
         return -1;
@@ -170,11 +170,9 @@ int check_for_order(node_t ** head, elev_motor_direction_t dir, int floor){
     if((*head)->request.floor == floor){
         return 1;
     }
-
-
     while (current != NULL) {
         if (current->request.floor == floor &&
-            (current->request.direction == dir || dir == DIRN_STOP || current->request.direction == DIRN_STOP)) {
+            (current->request.direction == dir || dir == BUTTON_COMMAND || current->request.direction == BUTTON_COMMAND)) {
             current = remove_node(head, &current);
             return 1;
         } else current = current->next;
@@ -182,7 +180,7 @@ int check_for_order(node_t ** head, elev_motor_direction_t dir, int floor){
     return 0;
 }
 
-void complete_order(node_t ** head,  int floor){
+void clear_order(node_t ** head,  int floor){
     if (*head == NULL) return;
     node_t * current = *head;
     current = *head;
@@ -195,4 +193,44 @@ void complete_order(node_t ** head,  int floor){
     if (current->request.floor == floor) {
         remove_last(head);
     }
+}
+
+
+
+
+void update(order_queue_t * self){
+    request_t temp;
+    for(int floor = 0; floor<=3; ++floor){
+        for(int button = 0; floor<=3; ++floor){
+            if(elev_get_button_signal(button, floor)){
+                temp.floor = floor;
+                temp.direction = button;
+                push(&self->head, temp);
+            }
+        }
+    }
+}
+
+void clear_queue(order_queue_t * self){
+    delete_list(self->head);
+}
+
+int check_for_order(order_queue_t * self, elev_button_type_t dir){
+    return get_order(&self->head, dir, elev_get_floor_sensor_signal());
+}
+
+elev_motor_direction_t next_order(order_queue_t * self){
+    if (self->head->request.floor > elev_get_floor_sensor_signal()){
+        return DIRN_UP;
+    }
+    else if (self->head->request.floor < elev_get_floor_sensor_signal()){
+        return DIRN_DOWN;
+    }
+    else {
+        return DIRN_STOP;
+    }
+}
+
+void complete_order(order_queue_t * self){
+    clear_order(&self->head, elev_get_floor_sensor_signal());
 }
