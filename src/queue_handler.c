@@ -47,6 +47,9 @@ void push(node_t ** head, request_t request) {
     }
     node_t * current = *head;
     while (current->next != NULL) {
+        if (current->request.floor == request.floor || current->request.direction = request.direction){
+            return;
+        }
         current = current->next;
     }
 
