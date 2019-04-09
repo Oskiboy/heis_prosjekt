@@ -36,7 +36,7 @@ struct order_queue_struct{
 
     void (*update) (order_queue_t * self);
     void (*clear_queue) (order_queue_t * self);
-    int  (*check_for_order) (order_queue_t * self, elev_button_type_t dir);
+    int  (*check_for_order) (order_queue_t * self, elev_motor_direction_t dir);
     elev_motor_direction_t (*next_order) (order_queue_t * self);
     void (*complete_order) (order_queue_t * self);
 };
