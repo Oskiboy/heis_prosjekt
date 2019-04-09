@@ -216,7 +216,7 @@ void update(order_queue_t * self){
             if(elev_get_button_signal(button, floor)){
                 temp.floor = floor;
                 temp.direction = button;
-                temp.stamp = time(NULL);
+                temp.stamp = (int) time(NULL) - self->start_time;
                 push(&self->head, temp);
             }
         }
