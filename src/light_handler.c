@@ -22,6 +22,8 @@ void update_lights(void) {
 }
 void clear_order_lights(void) {
     int floor = elev_get_floor_sensor_signal();
+    if(floor < 0)
+        return;
     elev_set_button_lamp(BUTTON_COMMAND, floor, 0);
     if (floor == 3) {
         elev_set_button_lamp(BUTTON_CALL_DOWN, floor, 0);
