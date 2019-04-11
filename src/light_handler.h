@@ -7,7 +7,7 @@
 #define LIGHT_HANDLER_H
 
 /**
- * @brief Turns on all order button lights and floor light.
+ * @brief Turns on all required order button lights and floor lights.
  * Every time this function is called it will check all buttons and the floor sensor
  * and light all the required lights.
  */
