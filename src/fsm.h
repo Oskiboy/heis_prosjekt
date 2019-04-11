@@ -32,7 +32,10 @@ standby_state_function,     \
 serve_order_state_function, \
 stop_state_function,        \
 init_state_function         \
-}};
+},                          \
+-1,                         \
+DIRN_STOP                   \
+};
 
 enum state_enumeration;
 struct fsm_module_struct;
@@ -78,12 +81,14 @@ enum state_enumeration {
  * @struct fsm_module_struct The fsm struct that implements the fsm module
  */
 struct fsm_module_struct{
-    state_t state;                                          ///< Holds the current state
-    int _init;                                              ///< Keeps track of wether or not the fsm is initialized.
-    elev_motor_direction_t  _dir;                           ///< Keeps track of the current direction.
-    state_function_t current_state_function;                ///< The current state function is run every loop.
-    const state_function_t state_function_array[STATES_N];  ///< A constant array that holds all the different state functions.
-    time_t _timestamp;                                      ///<  A way to keep track of the time passed when timing door opening and closing.
+    state_t                     state;  ///< Holds the current state
+    int                         _init;  ///< Keeps track of wether or not the fsm is initialized.
+    elev_motor_direction_t      _dir;   ///< Keeps track of the current direction.
+    state_function_t            current_state_function;         ///< The current state function is run every loop.
+    const state_function_t      state_function_array[STATES_N]; ///< A constant array that holds all the different state functions.
+    time_t                      _timestamp;     ///<  A way to keep track of the time passed when timing door opening and closing.
+    int                         _last_floor;    ///< To remember our position in case of stopping.
+    elev_motor_direction_t      _last_dir;      ///< Also to remember which way we moved after stopping.
 };
 
 /**

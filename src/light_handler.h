@@ -17,6 +17,12 @@ void update_lights(void);
  * @brief Clears all order lights for the current floor.
  * When this function is called it clears all orders for the corresponding floor.
  */
-void clear_order_lights(void);
+void clear_order_light(void);
+
+/**
+ * @brief Clears all order lights on all floors.
+ * When the elevator stops all orders and all order lights needs to be cleared, this function clears all lights in all floors.
+ */
+void clear_all_order_lights(void);
 
 #endif //LIGHT_HANDLER_H
