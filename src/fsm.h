@@ -59,6 +59,13 @@ typedef struct fsm_module_struct fsm_t;
  */
 typedef state_t (*state_function_t)(fsm_t* fsm_p, order_queue_t* queue_p);
 
+/**
+ * @brief All states have a corresponding state constant.
+ * To make the states as explicit as possible using a enum and then typedefing 
+ * that enum will make the code overall easier to read. It also gives warnings if you try to 
+ * implicitly convert for example an int to a state_t
+ * 
+ */
 enum state_enumeration {
     UP_STATE,
     DOWN_STATE,
@@ -71,18 +78,17 @@ enum state_enumeration {
 
 
 /**
- * @brief The fsm struct that implements the fsm module
- * 
+ * @struct fsm_module_struct The fsm struct that implements the fsm module
  */
 struct fsm_module_struct{
-    state_t                     state;
-    int                         _init;
-    elev_motor_direction_t      _dir;
-    state_function_t            current_state_function;
-    const state_function_t      state_function_array[STATES_N];
-    time_t                      _timestamp;
-    int                         _last_floor;
-    elev_motor_direction_t      _last_dir;
+    state_t                     state;  ///< Holds the current state
+    int                         _init;  ///< Keeps track of wether or not the fsm is initialized.
+    elev_motor_direction_t      _dir;   ///< Keeps track of the current direction.
+    state_function_t            current_state_function;         ///< The current state function is run every loop.
+    const state_function_t      state_function_array[STATES_N]; ///< A constant array that holds all the different state functions.
+    time_t                      _timestamp;     ///<  A way to keep track of the time passed when timing door opening and closing.
+    int                         _last_floor;    ///< To remember our position in case of stopping.
+    elev_motor_direction_t      _last_dir;      ///< Also to remember which way we moved after stopping.
 };
 
 /**

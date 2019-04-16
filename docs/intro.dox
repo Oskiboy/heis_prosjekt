@@ -1,0 +1,16 @@
+/**
+* @mainpage Introduction to the project
+* @section intro_sec Introduction
+* For this project we were tasked with creating software to controll an elevator.
+* The elevator has to follow a set of specification given to us and pass a FAT(Factory Acceptance Test).
+* <a href="oppgave.pdf" target="_blank"><b>Specifications and task.</b></a>
+*
+* @section deps_sec Dependencies
+* To build the project certain dependencies are needed.
+* To compile you need to install the clang compiler, make and <a href="https://github.com/Linux-Comedi/comedilib">comedi lib.</a>
+* After installing all these run make in the root directory of the project to produce the <b>heis</b> executable.
+* Running this on a computer with the elevator hardware connected will run the software.
+*
+* @section arch_sec Architecture
+* 
+*/

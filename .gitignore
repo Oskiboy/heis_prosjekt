@@ -53,7 +53,8 @@ dkms.conf
 
 build/
 .vscode
-docs/
+docs/html
+docs/latex
 *.log
 tests/libelev_wrapper.a
 
