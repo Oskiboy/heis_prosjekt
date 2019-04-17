@@ -86,7 +86,7 @@ state_t standby_state_function(fsm_t* fsm_p, order_queue_t* queue_p) {
     }
 
     //Check if we have an active order and transition to the appropriate state.
-    switch (queue_p->next_order(queue_p, fsm_p->_last_floor, fsm_p->_last_dir))
+    switch (queue_p->get_next_direction(queue_p, fsm_p->_last_floor, fsm_p->_last_dir))
     {
         case DIRN_UP:
             return UP_STATE;

@@ -204,7 +204,7 @@ int check_for_order(order_queue_t * self, elev_motor_direction_t dir){
     return 0;
 }
 
-elev_motor_direction_t next_order(order_queue_t * self, int last_floor, elev_motor_direction_t last_dir){
+elev_motor_direction_t get_next_direction(order_queue_t * self, int last_floor, elev_motor_direction_t last_dir){
     if (self->head == NULL) {
         return DIRN_STOP;
     }
