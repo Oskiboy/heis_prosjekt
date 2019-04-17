@@ -38,8 +38,17 @@ void push(node_t ** head, request_t request) {
         return;
     }
     node_t * current = *head;
+
+
+    
     while (current->next != NULL) {
+        if (current->request.floor == request.floor && current->request.direction == request.direction){
+            return;
+        }
         current = current->next;
+    }
+    if (current->request.floor == request.floor && current->request.direction == request.direction){
+        return;
     }
 
     /* now we can add a new variable */
@@ -138,7 +147,7 @@ int get_order(node_t ** head, elev_button_type_t dir, int floor){
     while (current != NULL) {
         if (current->request.floor == floor &&
             (current->request.direction == dir || dir == BUTTON_COMMAND || current->request.direction == BUTTON_COMMAND)) {
-            current = remove_node(head, &current);
+            //current = remove_node(head, &current);
             return 1;
         } else current = current->next;
     }
@@ -148,7 +157,6 @@ int get_order(node_t ** head, elev_button_type_t dir, int floor){
 void clear_order(node_t ** head,  int floor){
     if (*head == NULL) return;
     node_t * current = *head;
-    current = *head;
     while (current->next != NULL) {
         if (current->request.floor == floor) {
             current = remove_node(head, &current);
@@ -165,12 +173,14 @@ void clear_order(node_t ** head,  int floor){
 
 void update(order_queue_t * self){
     request_t temp;
-    for(int floor = 0; floor<=3; ++floor){
-        for(int button = 0; floor<=3; ++floor){
+    for(int floor = 0; floor < 4; ++floor){
+        for(int button = 0; button < 3; ++button){
+            if ((floor == 0 && button == BUTTON_CALL_DOWN) || (floor == 3 && button == BUTTON_CALL_UP)){
+                continue;
+            }
             if(elev_get_button_signal(button, floor)){
                 temp.floor = floor;
                 temp.direction = button;
-                temp.stamp = time(NULL);
                 push(&self->head, temp);
             }
         }
@@ -194,16 +204,28 @@ int check_for_order(order_queue_t * self, elev_motor_direction_t dir){
     return 0;
 }
 
-elev_motor_direction_t next_order(order_queue_t * self){
-    if (self->head->request.floor > elev_get_floor_sensor_signal()){
-        return DIRN_UP;
-    }
-    else if (self->head->request.floor < elev_get_floor_sensor_signal()){
-        return DIRN_DOWN;
-    }
-    else {
+elev_motor_direction_t get_next_direction(order_queue_t * self, int last_floor, elev_motor_direction_t last_dir){
+    if (self->head == NULL) {
         return DIRN_STOP;
     }
+    if (self->head->request.floor > last_floor){
+        return DIRN_UP;
+    }
+    else if (self->head->request.floor < last_floor){
+        return DIRN_DOWN;
+    }
+    else if (last_floor == elev_get_floor_sensor_signal() ){
+        return DIRN_STOP;
+    }
+    else {
+        if (last_dir == DIRN_DOWN){
+            return DIRN_UP;
+        }
+        else if (last_dir == DIRN_UP){
+            return DIRN_DOWN;
+        }
+    }
+    return DIRN_STOP;
 }
 
 void complete_order(order_queue_t * self){

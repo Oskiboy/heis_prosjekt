@@ -23,7 +23,7 @@ int return_one() {
 void empty_function() {
     return;
 }
-elev_motor_direction_t motor_dir(order_queue_t* dummy) {
+elev_motor_direction_t motor_dir(order_queue_t* dummy, int last_floor, elev_motor_direction_t last_dir) {
     return 1;
 }
 int order(order_queue_t* dummy, elev_motor_direction_t dir) {
@@ -37,7 +37,7 @@ void setUp(void) {
     //reset the elevator position and if possible reset the buttons.
     q.complete_order=empty_function;
     q.clear_queue=empty_function;
-    q.next_order=motor_dir;
+    q.get_next_direction=motor_dir;
     q.check_for_order = order;
     fsm_test_m._dir = 0;
     write_to_socket(reset_cmd);

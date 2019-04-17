@@ -7,7 +7,7 @@ CFLAGS	+= -I../src -I ../Unity/src
 #	Defines
 #########################
 OUTPUT_DIR 	= build
-TESTS		= logger_tests fsm_tests
+TESTS		= fsm_tests
 TESTS		:= $(addprefix $(OUTPUT_DIR)/,$(TESTS))
 TEST_DEPS	= $(OUTPUT_DIR)/unity.o libelev_wrapper.a
 
@@ -23,13 +23,9 @@ all: $(OUTPUT_DIR)/unity.o $(TESTS)
 
 run_tests: all
 	@echo "Running tests"
-	./build/logger_tests
 	./build/fsm_tests
 
-$(OUTPUT_DIR)/logger_tests: ../build/logger.o test_logger.c $(TEST_DEPS)
-	$(CC) -o $@ $^ $(CFLAGS)
-
-$(OUTPUT_DIR)/fsm_tests: fsm_tests.c ../$(BUILD_DIR)/fsm.o $(TEST_DEPS)
+$(OUTPUT_DIR)/fsm_tests: fsm_tests.c ../$(BUILD_DIR)/fsm.o ../$(BUILD_DIR)/light_handler.o $(TEST_DEPS)
 	$(CC) -o $@ $^  $(CFLAGS) $(LDFLAGS)
 
 $(OUTPUT_DIR)/queue_test: ../build/queue_handler.o test_queue.c $(TEST_DEPS)
@@ -45,4 +41,4 @@ $(OUTPUT_DIR):
 	mkdir $(OUTPUT_DIR)
 
 clean:
-	rm $(TESTS)
+	rm -rf $(OUTPUT_DIR)

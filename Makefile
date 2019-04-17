@@ -2,7 +2,9 @@
 # Set up variables
 ###################
 
-SOURCES 		:= main.c logger.c fsm.c queue_handler.c
+
+SOURCES 		:= main.c fsm.c queue_handler.c light_handler.c
+
 ELEV_DRIVER_SRC := elev.c io.c
 BUILD_DIR 		:= build
 SRC_DIR 		:= src
@@ -53,7 +55,7 @@ docs:
 #############################
 # Unit tests.
 #############################
-.PHONY: tests
+.PHONY: tests run_tests clean_tests
 export BUILD_DIR
 export CFLAGS
 export CC
@@ -63,3 +65,5 @@ tests: heis
 run_tests: tests
 	make -C tests run_tests
 
+clean_tests:
+	make -C tests clean

@@ -26,7 +26,7 @@
 static order_queue_t _name = {  \
 NULL, update,    \
 clear_queue, check_for_order,   \
-next_order, complete_order  \
+get_next_direction, complete_order  \
 }
 
 //Now pass the module to the run_fsm(fsm_t* fsm_p) function
@@ -58,11 +58,10 @@ typedef struct order_queue_struct order_queue_t;
 
 struct order_queue_struct{
     node_t * head;
-
     void (*update) (order_queue_t * self);
     void (*clear_queue) (order_queue_t * self);
     int  (*check_for_order) (order_queue_t * self, elev_motor_direction_t dir);
-    elev_motor_direction_t (*next_order) (order_queue_t * self);
+    elev_motor_direction_t (*get_next_direction) (order_queue_t * self, int last_floor, elev_motor_direction_t dir);
     void (*complete_order) (order_queue_t * self);
 };
 
@@ -131,7 +130,7 @@ void clear_order(node_t ** head, int floor);
  */
 int check_for_order(order_queue_t * self, elev_motor_direction_t dir);
 
-elev_motor_direction_t next_order(order_queue_t * self);
+elev_motor_direction_t get_next_direction(order_queue_t * self, int last_floor, elev_motor_direction_t last_dir);
 
 void clear_queue(order_queue_t * self);
 
