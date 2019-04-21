@@ -1,5 +1,5 @@
 /**
-* @mainpage Introduction to the project
+* @mainpage <b>Project overview</b>
 * @section intro_sec Introduction
 * For this project we were tasked with creating software to controll an elevator.
 * The elevator has to follow a set of specification given to us and pass a FAT(Factory Acceptance Test).
@@ -8,9 +8,20 @@
 * @section deps_sec Dependencies
 * To build the project certain dependencies are needed.
 * To compile you need to install the clang compiler, make and <a href="https://github.com/Linux-Comedi/comedilib">comedi lib.</a>
-* After installing all these run make in the root directory of the project to produce the <b>heis</b> executable.
+* After installing all these run `make` in the root directory of the project to produce the <b>heis</b> executable.
 * Running this on a computer with the elevator hardware connected will run the software.
 *
 * @section arch_sec Architecture
-* 
+* The overall design of the system is shown in the <a href="system_class_diagram.pdf" target="_blank">class diagram</a> and 
+* the behaviour of the FSM is shown in the <a href="fsm_state_diagram.pdf" target="_blank">FSM state diagram</a>.
+* The system is designed to be modular and easy to expand. We have used a struct with function pointers to implement most modules to
+* most easily bugfix and change the behaviour of each module without having to change the entire codebase.
+* To garantee correct instantiation of each strct a macro is created to fix this for the user of the module.
+*
+* @section test_sec Unit tests
+* There was an attempt to create a set of unit tests for practicing test driven development, but the simulator created for this
+* purpose was not finished enough by the time that it was needed and the unit tests were therefore not completed either.
+* The simulator itself can be found <a href="https://www.github.com/Oskiboy/elevator_simulator">here.</a>
+* To run the unit tests that are created, do `git submodule init`, `git submodule update`, run the simulator from the submodule and run `make run_tests`
+*
 */
