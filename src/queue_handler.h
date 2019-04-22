@@ -46,27 +46,31 @@ typedef struct request {
  * This struct is used to make the queue data structure.
  */
 typedef struct node {
-    request_t request;
-    struct node * next;
-    struct node * last;
+    request_t request;  ///< The nodes data.
+    struct node * next; ///< Pointer to next node
+    struct node * last; ///< Pointer to the last node.
 } node_t;
 
-
-
 struct order_queue_struct;
+
+/**
+ * @brief Typedefs the order_queue_struct to a readable representation.
+ * 
+ */
 typedef struct order_queue_struct order_queue_t;
 
 
 /**
- * @struct order_queue_struct, The struct that implements the queue module
+ * @struct order_queue_struct
+ * @brief The struct that implements the queue module
  */
 struct order_queue_struct{
     node_t * head; ///< Pointer to the first element in the queue
-    void (*update) (order_queue_t * self);
-    void (*clear_queue) (order_queue_t * self);
-    int  (*check_for_order) (order_queue_t * self, elev_motor_direction_t dir);
-    elev_motor_direction_t (*get_next_direction) (order_queue_t * self, int last_floor, elev_motor_direction_t dir);
-    void (*complete_order) (order_queue_t * self);
+    void (*update) (order_queue_t * self); ///< Function that will update the state of the queue
+    void (*clear_queue) (order_queue_t * self); ///< Clears the queue
+    int  (*check_for_order) (order_queue_t * self, elev_motor_direction_t dir); ///< Checks for an existing order
+    elev_motor_direction_t (*get_next_direction) (order_queue_t * self, int last_floor, elev_motor_direction_t dir); ///< Returns the next direction to travel.
+    void (*complete_order) (order_queue_t * self); ///< Completes the order of the current floor, removing it from the queue.
 };
 
 
