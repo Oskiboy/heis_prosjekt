@@ -1,0 +1,333 @@
+title Henting av person i 2. etasje til 4. etasje
+
+actor Actor
+
+participant elev
+participant queue_handler
+participant fsm
+
+participant light_handeler
+activate fsm
+
+Actor->elev: Press Button 1. floor
+
+fsm->queue_handler: update()
+activate queue_handler
+loop i < 4
+queue_handler->elev: get_button_signal(i)
+activate elev
+elev-->queue_handler: signal
+deactivate elev
+end
+note over queue_handler: now there is one request \nto pick up on the 2nd floor \nin the queue 
+queue_handler-->fsm:
+deactivate queue_handler
+
+fsm->light_handeler: update_lights()
+activate light_handeler
+note over light_handeler: communicates with elev \nto turn on the correct lights
+light_handeler-->fsm: 
+deactivate light_handeler
+
+
+
+fsm->fsm: standby_state_function()
+activate fsm
+
+fsm->queue_handler: get_next_direction()
+activate queue_handler
+note over queue_handler: Elevator is on the 2. floor \nthe next order is on 1. floor \n0<1 so DIRN_DOWN is returned
+queue_handler-->fsm:direction = DIRN_DOWN
+deactivate queue_handler
+
+fsm-->fsm:state = DOWN_STATE
+deactivate fsm
+
+note right of fsm: checks for updates, but there are none
+
+
+
+loop tate = DOWN_STATE
+fsm->fsm: down_state_function()
+activate fsm
+
+fsm->elev: elev_get_stop_signal()
+activate elev
+elev-->fsm: stop_signal = 0
+deactivate elev
+fsm->elev: elev_set_motor_direction(DIRN_DOWN)
+activate elev
+elev-->fsm:
+deactivate elev
+
+fsm->queue_handler: check_for_order()
+activate queue_handler
+queue_handler->elev: elev_get_floor_sensor_signal()
+activate elev
+elev-->queue_handler: floor_sensor_signal
+deactivate elev
+queue_handler-->fsm: order
+deactivate queue_handler
+
+note over fsm: if order == 1 then state = SERVE_ORDER_STATE
+fsm-->fsm:state
+deactivate fsm
+note right of fsm: checks for updates, but there are none
+end
+
+
+fsm->fsm:serve_order_state_function()
+activate fsm
+
+fsm->elev: elev_get_stop_signal()
+activate elev
+elev-->fsm:stop_signal = 0
+deactivate elev
+
+
+fsm->elev: elev_get_obstruction_signal()
+activate elev
+elev-->fsm:obstruction_signal = 0
+deactivate elev
+
+fsm->queue_handler: check_for_order()
+activate queue_handler
+queue_handler->elev: elev_get_floor_sensor_signal()
+elev-->queue_handler: floor_sensor_signal
+queue_handler-->fsm: order = 1
+deactivate queue_handler
+
+fsm->elev: elev_set_motor_direction(DIRN_STOP)
+activate elev
+elev-->fsm:
+deactivate elev
+
+fsm->light_handeler: clear_order_light()
+activate light_handeler
+note over light_handeler: communicates with elev \nto turn of the correct lights
+light_handeler-->fsm: 
+deactivate light_handeler
+
+fsm->queue_handler: complete_order()
+activate queue_handler
+note over queue_handler: Removes all orders on 1st floor from queue
+queue_handler-->fsm:
+deactivate queue_handler
+
+fsm->elev: elev_set_door_open_lamp(1)
+activate elev
+note over elev: turns on door_open_lamp
+elev-->fsm: 
+deactivate elev
+
+
+note right of fsm: _timestamp = time() 
+
+fsm-->fsm:state = SERVE_ORDER_STATE
+deactivate fsm
+
+
+Actor->elev:Press Button go to 4. floor
+
+fsm->queue_handler: update()
+activate queue_handler
+loop i < 4
+queue_handler->elev: get_button_signal(i)
+activate elev
+elev-->queue_handler: signal
+deactivate elev
+end
+note over queue_handler: now there is one request \nto go to the 4th floor in the \nqueue 
+queue_handler-->fsm:
+deactivate queue_handler
+
+fsm->light_handeler: update_lights()
+activate light_handeler
+note over light_handeler: communicates with elev \nto turn on the correct lights
+light_handeler-->fsm: 
+deactivate light_handeler
+
+
+loop _timestamp - time() < 3
+fsm->fsm:serve_order_state_function()
+activate fsm
+
+fsm->elev: elev_get_stop_signal()
+activate elev
+elev-->fsm: stop_signal = 0
+deactivate elev
+
+
+fsm->elev: elev_get_obstruction_signal()
+activate elev
+elev-->fsm: obstruction_signal = 0
+deactivate elev
+
+
+fsm-->fsm:state
+deactivate fsm
+note right of fsm: checks for updates, but there are none
+end
+
+
+fsm->fsm:serve_order_state_function()
+activate fsm
+
+fsm->elev: elev_get_stop_signal()
+activate elev
+elev-->fsm: stop_signal = 0
+deactivate elev
+
+
+fsm->elev: elev_get_obstruction_signal()
+activate elev
+elev-->fsm: obstruction_signal = 0
+deactivate elev
+
+fsm->elev: elev_set_door_open_lamp(0)
+activate elev
+note over elev: turns off door_open_lamp
+elev-->fsm: 
+deactivate elev
+
+fsm-->fsm: state = STANDBY_STATE
+deactivate fsm
+
+fsm->fsm: standby_state_function()
+activate fsm
+
+
+fsm->queue_handler: get_next_direction()
+activate queue_handler
+note over queue_handler: Elevator is on the 1st floor \nthe next order is on 4th floor \n3>0 so DIRN_UP is returned
+queue_handler-->fsm:direction = DIRN_UP
+deactivate queue_handler
+
+fsm-->fsm:state = UP_STATE
+deactivate fsm
+note right of fsm: checks for updates, but there are none
+
+loop order = 0
+fsm->fsm: up_state_function()
+activate fsm
+
+fsm->elev: elev_get_stop_signal()
+activate elev
+elev-->fsm: stop_signal = 0
+deactivate elev
+fsm->elev: elev_set_motor_direction(DIRN_UP)
+activate elev
+elev-->fsm:
+deactivate elev
+
+fsm->queue_handler: check_for_order()
+activate queue_handler
+queue_handler->elev: elev_get_floor_sensor_signal()
+activate elev
+
+elev-->queue_handler: floor_sensor_signal
+deactivate elev
+queue_handler-->fsm: order = 0
+deactivate queue_handler
+
+
+fsm-->fsm:state = SERVE_ORDER_STATE
+deactivate fsm
+note right of fsm: checks for updates, but there are none
+end
+
+fsm->fsm:serve_order_state_function()
+activate fsm
+
+fsm->elev: elev_get_stop_signal()
+activate elev
+elev-->fsm: stop_signal = 0
+deactivate elev
+
+
+fsm->elev: elev_get_obstruction_signal()
+activate elev
+elev-->fsm: obstruction_signal = 0
+deactivate elev
+
+fsm->queue_handler: check_for_order()
+activate queue_handler
+queue_handler-->fsm: order = 1
+deactivate queue_handler
+
+fsm->elev: elev_set_motor_direction(DIRN_STOP)
+activate elev
+elev-->fsm:
+deactivate elev
+
+fsm->light_handeler: clear_order_light()
+activate light_handeler
+note over light_handeler: communicates with elev \nto turn of the correct lights
+light_handeler-->fsm: 
+deactivate light_handeler
+
+fsm->queue_handler: complete_order()
+activate queue_handler
+note over queue_handler: Removes all orders on 4th floor from queue
+queue_handler-->fsm:
+deactivate queue_handler
+
+fsm->elev: elev_set_door_open_lamp(1)
+activate elev
+note over elev:turns on door_open_lamp
+elev-->fsm: 
+deactivate elev
+
+
+note right of fsm: _timestamp = time() 
+
+fsm-->fsm:state = SERVE_ORDER_STATE
+deactivate fsm
+
+note right of fsm: checks for updates, but there are none
+
+loop _timestamp - time() < 3
+fsm->fsm:serve_order_state_function()
+activate fsm
+
+fsm->elev: elev_get_stop_signal()
+activate elev
+elev-->fsm: stop_signal = 0
+deactivate elev
+
+
+fsm->elev: elev_get_obstruction_signal()
+activate elev
+elev-->fsm: obstruction_signal = 0
+deactivate elev
+
+
+fsm-->fsm:state
+deactivate fsm
+note right of fsm: checks for updates, but there are none
+end
+
+
+
+fsm->fsm:serve_order_state_function()
+activate fsm
+
+fsm->elev: elev_get_stop_signal()
+activate elev
+elev-->fsm: stop_signal = 0
+deactivate elev
+
+
+fsm->elev: elev_get_obstruction_signal()
+activate elev
+elev-->fsm: obstruction_signal = 0
+deactivate elev
+
+fsm->elev: elev_set_door_open_lamp(0)
+activate elev
+note over elev: turns off door_open_lamp
+elev-->fsm: 
+deactivate elev
+
+fsm-->fsm: state = STANDBY_STATE
+deactivate fsm

@@ -26,19 +26,19 @@
 static order_queue_t _name = {  \
 NULL, update,    \
 clear_queue, check_for_order,   \
-next_order, complete_order  \
+get_next_direction, complete_order  \
 }
 
 //Now pass the module to the run_fsm(fsm_t* fsm_p) function
 
 /**
  * @brief Request struct.
- * This struct is used in the queue .
+ * This struct is used in the queue to contain the data for each request.
  */
 typedef struct request {
-    int floor;
-    elev_button_type_t direction;
-    int stamp;
+    int floor; ///< The floor of the request
+    elev_button_type_t direction; ///< Type of request BUTTON_CALL_UP, BUTTON_CALL_DOWN, BUTTON_COMMAND
+    int stamp; ///< Stamp on each request, not used at the moment but could be used in the future to add an efficient sorting algorithm to the queue
 } request_t;
 
 /**
@@ -46,23 +46,31 @@ typedef struct request {
  * This struct is used to make the queue data structure.
  */
 typedef struct node {
-    request_t request;
-    struct node * next;
-    struct node * last;
+    request_t request;  ///< The nodes data.
+    struct node * next; ///< Pointer to next node
+    struct node * last; ///< Pointer to the last node.
 } node_t;
 
-
-
 struct order_queue_struct;
+
+/**
+ * @brief Typedefs the order_queue_struct to a readable representation.
+ * 
+ */
 typedef struct order_queue_struct order_queue_t;
 
+
+/**
+ * @struct order_queue_struct
+ * @brief The struct that implements the queue module
+ */
 struct order_queue_struct{
-    node_t * head;
-    void (*update) (order_queue_t * self);
-    void (*clear_queue) (order_queue_t * self);
-    int  (*check_for_order) (order_queue_t * self, elev_motor_direction_t dir);
-    elev_motor_direction_t (*next_order) (order_queue_t * self, int last_floor, elev_motor_direction_t dir);
-    void (*complete_order) (order_queue_t * self);
+    node_t * head; ///< Pointer to the first element in the queue
+    void (*update) (order_queue_t * self); ///< Function that will update the state of the queue
+    void (*clear_queue) (order_queue_t * self); ///< Clears the queue
+    int  (*check_for_order) (order_queue_t * self, elev_motor_direction_t dir); ///< Checks for an existing order
+    elev_motor_direction_t (*get_next_direction) (order_queue_t * self, int last_floor, elev_motor_direction_t dir); ///< Returns the next direction to travel.
+    void (*complete_order) (order_queue_t * self); ///< Completes the order of the current floor, removing it from the queue.
 };
 
 
@@ -75,7 +83,7 @@ void print_list(node_t * head);
 /**
  * @brief Push one request struct to end of queue.
  * @param head Pointer reference to first element in queue.
- * @param val Struct to be pushed.
+ * @param val request_t struct to be pushed to the queue.
  */
 void push(node_t ** head, request_t val);
 
@@ -124,18 +132,37 @@ void clear_order(node_t ** head, int floor);
 
 /**
  *
- * @param self
- * @param dir
- * @return
+ * @param self Pointer to a order_queue_t object
+ * @param dir Direction of the elevator
+ * @return -1: empty queue, 0: no stop request at current floor, 1: stop request at current floor.
  */
 int check_for_order(order_queue_t * self, elev_motor_direction_t dir);
 
-elev_motor_direction_t next_order(order_queue_t * self, int last_floor, elev_motor_direction_t last_dir);
+/**
+ *
+ * @param self Pointer to a order_queue_t object
+ * @param last_floor Last floor visited
+ * @param last_dir Last direction of the elevator
+ * @return The direction the elevator should take
+ */
+elev_motor_direction_t get_next_direction(order_queue_t * self, int last_floor, elev_motor_direction_t last_dir);
 
+/**
+ * @brief Delete all requests in queue
+ * @param self Pointer to a order_queue_t object
+ */
 void clear_queue(order_queue_t * self);
 
+/**
+ * @brief Deletes all requests in queue on the current floor
+ * @param self Pointer to a order_queue_t object
+ */
 void complete_order(order_queue_t * self);
 
+/**
+ * @brief Fetches button commands and pushes requests to the queue
+ * @param self Pointer to a order_queue_t object
+ */
 void update(order_queue_t * self);
 
 

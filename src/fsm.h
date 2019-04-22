@@ -10,13 +10,16 @@
  * @file 
  * @brief The FSM interface.
  * To create an FSM module to use add the FSM_MODULE macro with your defines and includes.
- * Now pass the module to the run_fsm(fsm_t* fsm_p) function
+ * To run the state machine, pass the module pointer to the run_fsm(fsm_t* fsm_p) function and the FSM will start its
+ * infinite loop.
  */ 
 
 /**
  * @def FSM_MODULE(_name)
  * This macro is used to create and instantiate a new fsm_module_struct.
- * This should always have a unique name and the run fsm function should be passed a pointer to this module.
+ * This should always have a unique name and the run_fsm function should be passed a pointer to this module.
+ * This method of initialization is to make sure the module is always properly initialized for the user and 
+ * a way for the maintainer to have a flexible interface to the user.
  * @param _name This is the name given to the new module. 
  */
 #define FSM_MODULE(_name)   \
@@ -59,6 +62,13 @@ typedef struct fsm_module_struct fsm_t;
  */
 typedef state_t (*state_function_t)(fsm_t* fsm_p, order_queue_t* queue_p);
 
+/**
+ * @brief All states have a corresponding state constant.
+ * To make the states as explicit as possible using a enum and then typedefing 
+ * that enum will make the code overall easier to read. It also gives warnings if you try to 
+ * implicitly convert for example an int to a state_t
+ * 
+ */
 enum state_enumeration {
     UP_STATE,
     DOWN_STATE,
@@ -71,18 +81,18 @@ enum state_enumeration {
 
 
 /**
+ * @struct fsm_module_struct
  * @brief The fsm struct that implements the fsm module
- * 
  */
 struct fsm_module_struct{
-    state_t                     state;
-    int                         _init;
-    elev_motor_direction_t      _dir;
-    state_function_t            current_state_function;
-    const state_function_t      state_function_array[STATES_N];
-    time_t                      _timestamp;
-    int                         _last_floor;
-    elev_motor_direction_t      _last_dir;
+    state_t                     state;  ///< Holds the current state
+    int                         _init;  ///< When the elevator has gotten to a well defined state, this will be set to 1.
+    elev_motor_direction_t      _dir;   ///< Keeps track of the current direction.
+    state_function_t            current_state_function;         ///< The current state function is run every loop.
+    const state_function_t      state_function_array[STATES_N]; ///< A constant array that holds all the different state functions.
+    time_t                      _timestamp;     ///<  A way to keep track of the time passed when timing door opening and closing.
+    int                         _last_floor;    ///< To remember our position in case of stopping.
+    elev_motor_direction_t      _last_dir;      ///< Also to remember which way we moved after stopping.
 };
 
 /**
@@ -100,7 +110,7 @@ int run_fsm(fsm_t* fsm_p, order_queue_t* queue_p);
 /**
  * @brief While the elevator is going up, this state is run.
  * 
- * @param fsm_p Pointer to a fsm object.
+ * @param fsm_p Pointer to a FSM object.
  * @param queue_p  Pointer to an order queue handler.
  * @return state_t The next state that the FSM should transition to.
  */
@@ -109,7 +119,7 @@ state_t up_state_function(fsm_t* fsm_p, order_queue_t* queue_p);
 /**
  * @brief While the elevator is going down, this state is run.
  * 
- * @param fsm_p Pointer to a fsm object.
+ * @param fsm_p Pointer to a FSM object.
  * @param queue_p  Pointer to an order queue handler.
  * @return state_t The next state that the FSM should transition to.
  */
@@ -118,7 +128,7 @@ state_t down_state_function(fsm_t* fsm_p, order_queue_t* queue_p);
 /**
  * @brief While the elevator is at a standstill, this state is run.
  * 
- * @param fsm_p Pointer to a fsm object.
+ * @param fsm_p Pointer to a FSM object.
  * @param queue_p  Pointer to an order queue handler.
  * @return state_t The next state that the FSM should transisiton to.
  */
@@ -136,7 +146,7 @@ state_t serve_order_state_function(fsm_t* fsm_p, order_queue_t* queue_p);
 /**
  * @brief When the stop button is pressed, this state will be run.
  * 
- * @param fsm_p Pointer to a fsm object.
+ * @param fsm_p Pointer to a FSM object.
  * @param queue_p  Pointer to an order queue handler.
  * @return state_t The next state that the FSM should transition to.
  */
@@ -145,7 +155,7 @@ state_t stop_state_function(fsm_t* fsm_p, order_queue_t* queue_p);
 /**
  * @brief While the elevator is initializing, this state will be run.
  * 
- * @param fsm_p Pointer to a fsm object.
+ * @param fsm_p Pointer to a FSM object.
  * @param queue_p  Pointer to an order queue handler.
  * @return state_t The next state that the FSM should transition to.
  */
